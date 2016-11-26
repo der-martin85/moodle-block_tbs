@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
 // This should probably be a class, but you can only have protected
 // class members in PHP 5, so we won't bother
 
-function get_mrbs_version()
+function get_tbs_version()
 {
-  // MRBS developers, make sure to update this string before each release
-  $mrbs_version = "MRBS 1.2.5";
+  // TBS developers, make sure to update this string before each release
+  $tbs_version = "TBS 1.2.5";
 
-  return $mrbs_version;
+  return $tbs_version;
 }

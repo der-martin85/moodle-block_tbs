@@ -35,7 +35,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
-    'block/mrbs:viewmrbs' => array(
+    'block/tbs:viewtbs' => array(
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -48,7 +48,7 @@ $capabilities = array(
         )
     ),
 
-    'block/mrbs:editmrbs' => array(
+    'block/tbs:edittbs' => array(
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -60,7 +60,7 @@ $capabilities = array(
         )
     ),
 
-    'block/mrbs:administermrbs' => array(
+    'block/tbs:administertbs' => array(
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -69,7 +69,7 @@ $capabilities = array(
         )
     ),
 
-    'block/mrbs:viewalltt' => array(
+    'block/tbs:viewalltt' => array(
 
         'captype' => 'view',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -81,7 +81,7 @@ $capabilities = array(
         )
     ),
 
-    'block/mrbs:forcebook' => array(
+    'block/tbs:forcebook' => array(
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -90,7 +90,7 @@ $capabilities = array(
         )
     ),
 
-    'block/mrbs:doublebook' => array(
+    'block/tbs:doublebook' => array(
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -101,21 +101,21 @@ $capabilities = array(
 
     // Limits users to only creating 'unconfirmed' bookings
     // (unless they are the room administrator)
-    'block/mrbs:editmrbsunconfirmed' => array(
+    'block/tbs:edittbsunconfirmed' => array(
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => array()
     ),
 
-    'block/mrbs:myaddinstance' => array(
+    'block/tbs:myaddinstance' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => array(
         ),
     ),
 
-    'block/mrbs:addinstance' => array(
+    'block/tbs:addinstance' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
 
         'captype' => 'write',
@@ -128,13 +128,13 @@ $capabilities = array(
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
 
-    'block/mrbs:ignoremaxadvancedays' => array(
+    'block/tbs:ignoremaxadvancedays' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => array(
             'manager' => CAP_ALLOW
         ),
-        'clonepermissionsfrom' => 'block/mrbs:administermrbs',
+        'clonepermissionsfrom' => 'block/tbs:administertbs',
     ),
 );
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks/mrbs/db" VERSION="20120213" COMMENT="XMLDB file for Moodle blocks/mrbs"
+<XMLDB PATH="blocks/tbs/db" VERSION="20120213" COMMENT="XMLDB file for Moodle blocks/tbs"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="block_mrbs_area" COMMENT="mrbs_area table retrofitted from MySQL">
+    <TABLE NAME="block_tbs_area" COMMENT="tbs_area table retrofitted from MySQL">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="area_name" TYPE="char" LENGTH="30" NOTNULL="false" SEQUENCE="false"/>
@@ -14,7 +14,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="block_mrbs_entry" COMMENT="mrbs_entry table retrofitted from MySQL">
+    <TABLE NAME="block_tbs_entry" COMMENT="tbs_entry table retrofitted from MySQL">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="start_time" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
@@ -33,7 +33,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="block_mrbs_repeat" COMMENT="mrbs_repeat table retrofitted from MySQL">
+    <TABLE NAME="block_tbs_repeat" COMMENT="tbs_repeat table retrofitted from MySQL">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="start_time" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
@@ -53,7 +53,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="block_mrbs_room" COMMENT="mrbs_room table retrofitted from MySQL">
+    <TABLE NAME="block_tbs_room" COMMENT="tbs_room table retrofitted from MySQL">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="area_id" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>

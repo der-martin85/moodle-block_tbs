@@ -210,7 +210,7 @@ function ForEachDescendant(obj, callback, ref) {
 }
 
 /*****************************************************************************\
- *            Part 2: MRBS-specific Active Cell Management routines            *
+ *            Part 2: TBS-specific Active Cell Management routines            *
  \*****************************************************************************/
 
 // Define global variables that control the behaviour of the Active Cells.
@@ -230,7 +230,7 @@ var GetNodeColorClass = function (node) {
     return node.className;
 }
 var SetNodeColorClass = function (node, colorClass) {
-    node.className = colorClass;  // Use the TD.highlight color from mrbs.css.
+    node.className = colorClass;  // Use the TD.highlight color from tbs.css.
 }
 
 // Helper routines for searching text in the TD.highlight CSS class.
@@ -381,7 +381,7 @@ function InitActiveCell(show, left, right, method, message) {
     if (useCssClass)			 // DOM-compliant browsers
         SetNodeColorClass = function (node, colorClass) {
             xbDump("SetNodeColorClass(" + colorClass + ")");
-            node.className = colorClass;  // Use the TD.highlight color from mrbs.css.
+            node.className = colorClass;  // Use the TD.highlight color from tbs.css.
         }
     else				 // Pre-DOM browsers like Opera 6
         SetNodeColorClass = function (node, colorClass) {

@@ -48,7 +48,7 @@ function minicals($year, $month, $day, $area, $room, $dmy, $usertt = false) {
             if (!empty($this->usertt)) {
                 $isuser = 'user';
             }
-            $returl = new moodle_url('/blocks/mrbs/web/'.$isuser.$this->dmy.'.php', array(
+            $returl = new moodle_url('/blocks/tbs/web/'.$isuser.$this->dmy.'.php', array(
                 'year' => $year, 'month' => $month, 'day' => $day, 'area' => $this->area
             ));
             if (!empty($this->usertt)) {

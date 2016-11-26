@@ -1,4 +1,4 @@
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -140,18 +140,18 @@ function RoomSearch() {
     xmlHttp.send(null);
 }
 
-var mrbs_weekdaynames = null;
+var tbs_weekdaynames = null;
 
 function SetWeekDayNames(mon, tue, wed, thu, fri, sat, sun) {
     "use strict";
-    mrbs_weekdaynames = new Array(7);
-    mrbs_weekdaynames[1] = mon;
-    mrbs_weekdaynames[2] = tue;
-    mrbs_weekdaynames[3] = wed;
-    mrbs_weekdaynames[4] = thu;
-    mrbs_weekdaynames[5] = fri;
-    mrbs_weekdaynames[6] = sat;
-    mrbs_weekdaynames[0] = sun;
+    tbs_weekdaynames = new Array(7);
+    tbs_weekdaynames[1] = mon;
+    tbs_weekdaynames[2] = tue;
+    tbs_weekdaynames[3] = wed;
+    tbs_weekdaynames[4] = thu;
+    tbs_weekdaynames[5] = fri;
+    tbs_weekdaynames[6] = sat;
+    tbs_weekdaynames[0] = sun;
 }
 
 function ChangeOptionDays(formObj, prefix, updatefreerooms, roomsearch) {
@@ -177,7 +177,7 @@ function ChangeOptionDays(formObj, prefix, updatefreerooms, roomsearch) {
 
     while (i.getMonth() == month) {
 
-        DaysObject.options[i.getDate() - 1] = new Option(mrbs_weekdaynames[i.getDay()] + " " + i.getDate(), i.getDate());
+        DaysObject.options[i.getDate() - 1] = new Option(tbs_weekdaynames[i.getDay()] + " " + i.getDate(), i.getDate());
         i.setTime(i.getTime() + 86400000);
     }
     DaysObject.selectedIndex = currentDay;

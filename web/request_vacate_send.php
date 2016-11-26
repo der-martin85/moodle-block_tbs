@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
 require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php');
 global $PAGE, $DB, $USER;
 
-$dayurl = new moodle_url('/blocks/mrbs/web/day.php');
+$dayurl = new moodle_url('/blocks/tbs/web/day.php');
 $PAGE->set_url($dayurl); // Hopefully will never be needed
 require_login();
 
 $context = context_system::instance();
 
-if (!has_capability('block/mrbs:editmrbs', $context) && !has_capability('block/mrbs:administermrbs', $context)) {
+if (!has_capability('block/tbs:edittbs', $context) && !has_capability('block/tbs:administertbs', $context)) {
     redirect($dayurl);
 }
 

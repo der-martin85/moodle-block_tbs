@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,13 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-// mrbs/week.php - Week-at-a-time view
+// tbs/week.php - Week-at-a-time view
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php');
 global $DB, $PAGE;
 include "config.inc.php";
 include "functions.php";
-require_once('mrbs_auth.php');
+require_once('tbs_auth.php');
 include "mincals.php";
 
 $day = optional_param('day', 0, PARAM_INT);
@@ -34,7 +34,7 @@ $morningstarts_minutes = optional_param('morningstarts_minutes', 0, PARAM_INT);
 $pview = optional_param('pview', 0, PARAM_INT);
 $timetohighlight = optional_param('timetohighlight', -1, PARAM_INT);
 
-$num_of_days = $cfg_mrbs->weeklength;
+$num_of_days = $cfg_tbs->weeklength;
 if ($num_of_days == 0) {
     $num_of_days = 7; //if user has not configured this, default to 7
 }
@@ -70,7 +70,7 @@ if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0) {
     $year = date("Y", $time);
 }
 
-$baseurl = new moodle_url('/blocks/mrbs/web/week.php', array(
+$baseurl = new moodle_url('/blocks/tbs/web/week.php', array(
     'day' => $day, 'month' => $month, 'year' => $year
 )); // Used as the basis for URLs throughout this file
 $thisurl = new moodle_url($baseurl);
@@ -93,7 +93,7 @@ $PAGE->set_url($thisurl);
 require_login();
 
 // print the page header
-print_header_mrbs($day, $month, $year, $area);
+print_header_tbs($day, $month, $year, $area);
 
 // Define the start and end of each day of the week in a way which is not
 // affected by daylight saving...
@@ -115,17 +115,17 @@ if ($pview != 1) {
     $this_room_name = "";
 
     // Show all areas
-    echo "<td width=\"30%\"><u>".get_string('areas', 'block_mrbs')."</u><br>";
+    echo "<td width=\"30%\"><u>".get_string('areas', 'block_tbs')."</u><br>";
 }
 
 // show either a select box or the normal html list
 if ($area_list_format == "select") {
     echo make_area_select_html('week.php', $area, $year, $month, $day); // from functions.php
-    $this_area_name = $DB->get_field('block_mrbs_area', 'area_name', array('id' => $area));
-    $this_room_name = $DB->get_field('block_mrbs_room', 'room_name', array('id' => $room));
-    $this_room_description = $DB->get_field('block_mrbs_room', 'description', array('id' => $room));
+    $this_area_name = $DB->get_field('block_tbs_area', 'area_name', array('id' => $area));
+    $this_room_name = $DB->get_field('block_tbs_room', 'room_name', array('id' => $room));
+    $this_room_description = $DB->get_field('block_tbs_room', 'description', array('id' => $room));
 } else {
-    $areas = $DB->get_records('block_mrbs_area', null, 'area_name');
+    $areas = $DB->get_records('block_tbs_area', null, 'area_name');
     foreach ($areas as $dbarea) {
         if ($pview != 1) {
             echo '<a href="'.($baseurl->out(true, array('area' => $dbarea->id))).'">';
@@ -145,14 +145,14 @@ if ($pview != 1) {
     echo "</td>\n";
 
     // Show all rooms in the current area
-    echo "<td width=\"30%\"><u>".get_string('rooms', 'block_mrbs')."</u><br>";
+    echo "<td width=\"30%\"><u>".get_string('rooms', 'block_tbs')."</u><br>";
 }
 
 // should we show a drop-down for the room list, or not?
 if ($area_list_format == "select") {
     echo make_room_select_html('week.php', $area, $room, $year, $month, $day); // from functions.php
 } else {
-    $rooms = $DB->get_records('block_mrbs_room', array('area_id' => $area), 'room_name');
+    $rooms = $DB->get_records('block_tbs_room', array('area_id' => $area), 'room_name');
     foreach ($rooms as $dbroom) {
         if ($pview != 1) {
             echo '<a href="'.($baseurl->out(true, array(
@@ -181,7 +181,7 @@ if ($pview != 1) {
 
 // Don't continue if this area has no rooms:
 if ($room <= 0) {
-    echo "<h1>".get_string('no_rooms_for_area', 'block_mrbs')."</h1>";
+    echo "<h1>".get_string('no_rooms_for_area', 'block_tbs')."</h1>";
     include "trailer.php";
     exit;
 }
@@ -210,13 +210,13 @@ if ($pview != 1) {
     $weekafter = new moodle_url($thisweekurl, array('year' => $ty, 'month' => $tm, 'day' => $td));
     echo "<table width=\"100%\"><tr><td>
       <a href=\"".$weekbefore."\">
-      &lt;&lt; ".get_string('weekbefore', 'block_mrbs')."</a></td>
-      <td align=center><a href=\"".$thisweekurl."\">".get_string('gotothisweek', 'block_mrbs')."</a></td>
+      &lt;&lt; ".get_string('weekbefore', 'block_tbs')."</a></td>
+      <td align=center><a href=\"".$thisweekurl."\">".get_string('gotothisweek', 'block_tbs')."</a></td>
       <td align=right><a href=\"".$weekafter."\">
-      ".get_string('weekafter', 'block_mrbs')."&gt;&gt;</a></td></tr></table>";
+      ".get_string('weekafter', 'block_tbs')."&gt;&gt;</a></td></tr></table>";
 }
 
-$roomdata = $DB->get_record('block_mrbs_room', array('id' => $room));
+$roomdata = $DB->get_record('block_tbs_room', array('id' => $room));
 $allowedtobook = allowed_to_book($USER, $roomdata);
 
 //Get all appointments for this week in the room that we care about
@@ -233,7 +233,7 @@ for ($j = 0; $j <= ($num_of_days - 1); $j++) {
     // If 0, then weekday=0 means Sunday. If 1, weekday=0 means Monday.
 
     $sql = 'room_id = ? AND start_time <= ? AND end_time > ?';
-    $entries = $DB->get_records_select('block_mrbs_entry', $sql, array($room, $pm7[$j], $am7[$j]));
+    $entries = $DB->get_records_select('block_tbs_entry', $sql, array($room, $pm7[$j], $am7[$j]));
 
     foreach ($entries as $entry) {
         if ($debug_flag) {
@@ -314,7 +314,7 @@ if ($javascript_cursor) // If authorized in config.inc.php, include the javascri
         ."true, "
         .((false != $times_right_side) ? "true" : "false").", "
         ."\"$highlight_method\", "
-        ."\"".get_string('click_to_reserve', 'block_mrbs')."\""
+        ."\"".get_string('click_to_reserve', 'block_tbs')."\""
         .");</SCRIPT>\n";
 }
 
@@ -322,7 +322,7 @@ if ($javascript_cursor) // If authorized in config.inc.php, include the javascri
 echo "<table cellspacing=0 border=1 width=\"100%\">";
 
 // The header row contains the weekday names and short dates.
-echo "<tr><th width=\"1%\"><br>".($enable_periods ? get_string('period', 'block_mrbs') : get_string('time'))."</th>";
+echo "<tr><th width=\"1%\"><br>".($enable_periods ? get_string('period', 'block_tbs') : get_string('time'))."</th>";
 if (empty($dateformat)) {
     $dformat = "%a<br>%b %d";
 } else {
@@ -330,18 +330,18 @@ if (empty($dateformat)) {
 }
 for ($j = 0; $j <= ($num_of_days - 1); $j++) {
     $t = mktime(12, 0, 0, $month, $day + $j, $year);
-    $dayurl = new moodle_url('/blocks/mrbs/web/day.php',
+    $dayurl = new moodle_url('/blocks/tbs/web/day.php',
                              array(
                                  'year' => userdate($t, "%Y"), 'month' => userdate($t, "%m"),
                                  'day' => userdate($t, "%d"), 'area' => $area
                              ));
-    echo '<th width="14%"><a href="'.$dayurl.'" title="'.get_string('viewday', 'block_mrbs').'">';
+    echo '<th width="14%"><a href="'.$dayurl.'" title="'.get_string('viewday', 'block_tbs').'">';
     echo userdate($t, $dformat)."</a></th>\n";
 }
 // next line to display times on right side
 if (false != $times_right_side) {
     echo "<th width=\"1%\"><br>"
-        .($enable_periods ? get_string('period', 'block_mrbs') : get_string('time'))
+        .($enable_periods ? get_string('period', 'block_tbs') : get_string('time'))
         ."</th>";
 }
 
@@ -371,10 +371,10 @@ for ($t = $starttime; $t <= $endtime; $t += $resolution) {
     tdcell("red");
     if ($enable_periods) {
         $time_t_stripped = preg_replace("/^0/", "", $time_t);
-        echo '<a href="'.$hiliteurl.'"  title="'.get_string('highlight_line', 'block_mrbs').'">';
+        echo '<a href="'.$hiliteurl.'"  title="'.get_string('highlight_line', 'block_tbs').'">';
         echo $periods[$time_t_stripped]."</a></td>";
     } else {
-        echo '<a href="'.$hiliteurl.'" title="'.get_string('highlight_line', 'block_mrbs').'">';
+        echo '<a href="'.$hiliteurl.'" title="'.get_string('highlight_line', 'block_tbs').'">';
         echo userdate($t, hour_min_format())."</a></td>";
     }
 
@@ -430,14 +430,14 @@ for ($t = $starttime; $t <= $endtime; $t += $resolution) {
                 if (!$allowedtobook) {
                     // User not allowed to book this room
                     echo '<center>';
-                    $title = get_string('notallowedbook', 'block_mrbs', $max_advance_days);
-                    echo '<img src="'.$OUTPUT->pix_url('toofaradvance', 'block_mrbs').'" width="10" height="10" border="0" alt="'.$title.'" title="'.$title.'" />';
+                    $title = get_string('notallowedbook', 'block_tbs', $max_advance_days);
+                    echo '<img src="'.$OUTPUT->pix_url('toofaradvance', 'block_tbs').'" width="10" height="10" border="0" alt="'.$title.'" title="'.$title.'" />';
                     echo '</center>';
                 } else if (!check_max_advance_days($wday, $wmonth, $wyear)) {
                     // Too far in advance to edit
                     echo '<center>';
-                    $title = get_string('toofaradvance', 'block_mrbs', $max_advance_days);
-                    echo '<img src="'.$OUTPUT->pix_url('toofaradvance', 'block_mrbs').'" width="10" height="10" border="0" alt="'.$title.'" title="'.$title.'" />';
+                    $title = get_string('toofaradvance', 'block_tbs', $max_advance_days);
+                    echo '<img src="'.$OUTPUT->pix_url('toofaradvance', 'block_tbs').'" width="10" height="10" border="0" alt="'.$title.'" title="'.$title.'" />';
                     echo '</center>';
                 } else {
                     if ($javascript_cursor) {
@@ -446,7 +446,7 @@ for ($t = $starttime; $t <= $endtime; $t += $resolution) {
                         echo "// -->\n</SCRIPT>";
                     }
                     echo "<center>";
-                    $editentry = new moodle_url('/blocks/mrbs/web/edit_entry.php',
+                    $editentry = new moodle_url('/blocks/tbs/web/edit_entry.php',
                                                 array(
                                                     'room' => $room, 'area' => $area, 'year' => $wyear,
                                                     'month' => $wmonth, 'day' => $wday
@@ -456,7 +456,7 @@ for ($t = $starttime; $t <= $endtime; $t += $resolution) {
                     } else {
                         echo '<a href="'.($editentry->out(true, array('hour' => $hour, 'minute' => $minute))).'">';
                     }
-                    echo '<img src="'.$OUTPUT->pix_url('new', 'block_mrbs').'" width="10" height="10" border="0"></a>';
+                    echo '<img src="'.$OUTPUT->pix_url('new', 'block_tbs').'" width="10" height="10" border="0"></a>';
                     echo "</center>";
                     if ($javascript_cursor) {
                         echo "<SCRIPT language=\"JavaScript\">\n<!--\n";
@@ -469,7 +469,7 @@ for ($t = $starttime; $t <= $endtime; $t += $resolution) {
             }
         } elseif ($descr != "") {
             //if it is booked then show
-            $viewentry = new moodle_url('/blocks/mrbs/web/view_entry.php',
+            $viewentry = new moodle_url('/blocks/tbs/web/view_entry.php',
                                         array(
                                             'id' => $id, 'area' => $area, 'day' => $wday,
                                             'month' => $wmonth, 'year' => $wyear
@@ -487,11 +487,11 @@ for ($t = $starttime; $t <= $endtime; $t += $resolution) {
         if ($enable_periods) {
             tdcell("red");
             $time_t_stripped = preg_replace("/^0/", "", $time_t);
-            echo '<a href="'.$hiliteurl.'" title="'.get_string('highlight_line', 'block_mrbs').'">';
+            echo '<a href="'.$hiliteurl.'" title="'.get_string('highlight_line', 'block_tbs').'">';
             echo $periods[$time_t_stripped]."</a></td>";
         } else {
             tdcell("red");
-            echo '<a href="'.$hiliteurl.'" title="'.get_string('highlight_line', 'block_mrbs').'">';
+            echo '<a href="'.$hiliteurl.'" title="'.get_string('highlight_line', 'block_tbs').'">';
             echo userdate($t, hour_min_format())."</a></td>";
         }
     }

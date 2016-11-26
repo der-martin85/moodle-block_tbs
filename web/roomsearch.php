@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php');
 include "config.inc.php";
 include "functions.php";
-require_once("mrbs_auth.php");
+require_once("tbs_auth.php");
 
 require_login();
 global $twentyfourhour_format;
@@ -137,7 +137,7 @@ if (($day == 0) or ($month == 0) or ($year == 0)) {
                 </TR>
             <?php } else { ?>
                 <TR>
-                    <TD CLASS=CR><B><?php echo get_string('period', 'block_mrbs') ?></B></TD>
+                    <TD CLASS=CR><B><?php echo get_string('period', 'block_tbs') ?></B></TD>
                     <TD CLASS=CL>
                         <SELECT NAME="period" onChange="RoomSearch()">
                             <?php
@@ -157,7 +157,7 @@ if (($day == 0) or ($month == 0) or ($year == 0)) {
                 <!-- Duration selectors -->
             <?php } ?>
             <TR>
-                <TD CLASS=CR><B><?php echo get_string('duration', 'block_mrbs'); ?></B></TD>
+                <TD CLASS=CR><B><?php echo get_string('duration', 'block_tbs'); ?></B></TD>
                 <TD CLASS=CL><INPUT NAME="duration" SIZE=7 VALUE="<?php echo $duration; ?>" onChange="RoomSearch()"
                                     onKeyUp="RoomSearch()">
                     <SELECT NAME="dur_units" onChange="RoomSearch()">
@@ -170,16 +170,16 @@ if (($day == 0) or ($month == 0) or ($year == 0)) {
 
                         while (list(, $unit) = each($units)) {
                             echo "<OPTION VALUE=$unit";
-                            if ($dur_units == get_string($unit, 'block_mrbs')) {
+                            if ($dur_units == get_string($unit, 'block_tbs')) {
                                 echo " SELECTED";
                             }
-                            echo " onChange=\"RoomSearch()\">".get_string($unit, 'block_mrbs');
+                            echo " onChange=\"RoomSearch()\">".get_string($unit, 'block_tbs');
                         }
                         ?>
                     </SELECT>
                     <INPUT NAME="all_day" TYPE="checkbox" VALUE="yes" id="all_day" <?php if ($all_day) {
                         echo 'CHECKED ';
-                    } ?>onClick="OnAllDayClick()"> <?php echo get_string('all_day', 'block_mrbs');
+                    } ?>onClick="OnAllDayClick()"> <?php echo get_string('all_day', 'block_tbs');
                     if ($all_day) {
                         echo '<body onload = "OnAllDayClick()"></body>';
                     } ?>
@@ -188,25 +188,25 @@ if (($day == 0) or ($month == 0) or ($year == 0)) {
 
             <!-- Capacity input-->
             <TR>
-                <TD CLASS=CR><B><?php echo get_string('mincapacity', 'block_mrbs') ?></B></TD>
+                <TD CLASS=CR><B><?php echo get_string('mincapacity', 'block_tbs') ?></B></TD>
                 <TD CLASS=CL><INPUT NAME="mincap" SIZE="3" onChange="RoomSearch()" onKeyUp="RoomSearch()"></TD>
             </TR>
 
             <!-- Teaching room input-->
             <TR>
-                <TD CLASS=CR><B><?php echo get_string('teachingroom', 'block_mrbs') ?></B></TD>
+                <TD CLASS=CR><B><?php echo get_string('teachingroom', 'block_tbs') ?></B></TD>
                 <TD CLASS=CL><INPUT TYPE="checkbox" NAME="teaching" onClick="RoomSearch()" CHECKED></TD>
             </TR>
 
             <!-- Special room input-->
             <TR>
-                <TD CLASS=CR><B><?php echo get_string('specialroom', 'block_mrbs') ?></B></TD>
+                <TD CLASS=CR><B><?php echo get_string('specialroom', 'block_tbs') ?></B></TD>
                 <TD CLASS=CL><INPUT TYPE="checkbox" NAME="special" onClick="RoomSearch()" CHECKED></TD>
             </TR>
 
             <!-- Computer room input-->
             <TR>
-                <TD CLASS=CR><B><?php echo get_string('computerroom', 'block_mrbs') ?></B></TD>
+                <TD CLASS=CR><B><?php echo get_string('computerroom', 'block_tbs') ?></B></TD>
                 <TD CLASS=CL><INPUT TYPE="checkbox" NAME="computer" onClick="RoomSearch()"></TD>
             </TR>
 
@@ -217,12 +217,12 @@ if (($day == 0) or ($month == 0) or ($year == 0)) {
 
 <!-- Area to display rooms found -->
 <h2 id="results"></h2>
-<?php echo '<table border=1 ><thead><tr><th>'.get_string('area', 'block_mrbs').'</th><th>Room</th><th>'.get_string('description').'</th><th>'.get_string('capacity', 'block_mrbs').'</th></tr></thead><tbody id="rooms"></tbody></table>'; ?>
+<?php echo '<table border=1 ><thead><tr><th>'.get_string('area', 'block_tbs').'</th><th>Room</th><th>'.get_string('description').'</th><th>'.get_string('capacity', 'block_tbs').'</th></tr></thead><tbody id="rooms"></tbody></table>'; ?>
 
 
 <SCRIPT LANGUAGE="JavaScript">
-    var langRoomsFree = '<?php print_string('roomsfree', 'block_mrbs');?>';
-    var langNoRooms = '<?php print_string('noroomsfound', 'block_mrbs');?>';
+    var langRoomsFree = '<?php print_string('roomsfree', 'block_tbs');?>';
+    var langNoRooms = '<?php print_string('noroomsfound', 'block_tbs');?>';
     window.onload = RoomSearch();
 </SCRIPT>
 

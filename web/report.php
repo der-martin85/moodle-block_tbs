@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -78,7 +78,7 @@ function describe_span($starts, $ends) {
     $start_time = userdate($starts, hours_minutes_seconds_format());
     $duration = $ends - $starts;
     if ($start_time == "00:00:00" && $duration == 60 * 60 * 24) {
-        return $start_date." - ".get_string('all_day', 'block_mrbs');
+        return $start_date." - ".get_string('all_day', 'block_tbs');
     }
     toTimeString($duration, $dur_units);
     return $start_date." ".$start_time." - ".$duration." ".$dur_units;
@@ -124,7 +124,7 @@ function reporton(&$item, &$last_area_room, &$last_date, $sortby, $display) {
     // entries to be sorted on area/room
     if ($sortby == "r") {
         if ($area_room != $last_area_room) {
-            echo "<hr><h2>".get_string('room', 'block_mrbs').": ".$area_room."</h2>\n";
+            echo "<hr><h2>".get_string('room', 'block_tbs').": ".$area_room."</h2>\n";
         }
         if ($date != $last_date || $area_room != $last_area_room) {
             echo "<hr noshade=\"true\"><h3>".get_string('date')." ".$date."</h3>\n";
@@ -141,7 +141,7 @@ function reporton(&$item, &$last_area_room, &$last_date, $sortby, $display) {
             echo "<hr><h2>".get_string('date')." ".$date."</h2>\n";
         }
         if ($area_room != $last_area_room || $date != $last_date) {
-            echo "<hr noshade=\"true\"><h3>".get_string('room', 'block_mrbs').": ".$area_room."</h3>\n";
+            echo "<hr noshade=\"true\"><h3>".get_string('room', 'block_tbs').": ".$area_room."</h3>\n";
             $last_area_room = $area_room;
         }
         // remember current date that is being processed.
@@ -155,7 +155,7 @@ function reporton(&$item, &$last_area_room, &$last_date, $sortby, $display) {
     echo "<hr><table width=\"100%\">\n";
 
     // Brief Description (title), linked to view_entry:
-    $viewurl = new moodle_url('/blocks/mrbs/web/view_entry.php', array('id' => $item->id));
+    $viewurl = new moodle_url('/blocks/tbs/web/view_entry.php', array('id' => $item->id));
     echo "<tr><td class=\"BL\"><a href=\"".$viewurl."\">"
         .s($item->name)."</a></td>\n";
 
@@ -182,9 +182,9 @@ function reporton(&$item, &$last_area_room, &$last_date, $sortby, $display) {
 
     // Entry Type:
     $et = empty($typel[$item->type]) ? "?$item->type?" : $typel[$item->type];
-    echo "<tr><td class=\"BL\" colspan=2><b>".get_string('type', 'block_mrbs')."</b> $et</td></tr>\n";
+    echo "<tr><td class=\"BL\" colspan=2><b>".get_string('type', 'block_tbs')."</b> $et</td></tr>\n";
     // Created by and last update timestamp:
-    echo "<tr><td class=\"BL\" colspan=2><small><b>".get_string('createdby', 'block_mrbs')."</b> ".
+    echo "<tr><td class=\"BL\" colspan=2><small><b>".get_string('createdby', 'block_tbs')."</b> ".
         s($item->create_by).", <b>".get_string('lastmodified')."</b> ".
         time_date_string($item->timestamp)."</small></td></tr>\n";
 
@@ -267,7 +267,7 @@ function do_summary(&$count, &$hours, &$room_hash, &$name_hash) {
     $n_names = sizeof($names);
 
     echo "<hr><h1>".
-        (empty($enable_periods) ? get_string('summary_header', 'block_mrbs') : get_string('summary_header_per', 'block_mrbs')).
+        (empty($enable_periods) ? get_string('summary_header', 'block_tbs') : get_string('summary_header_per', 'block_tbs')).
         "</h1><table border=2 cellspacing=4>\n";
     echo "<tr><td>&nbsp;</td>\n";
     for ($c = 0; $c < $n_rooms; $c++) {
@@ -318,7 +318,7 @@ if (($day == 0) or ($month == 0) or ($year == 0)) {
     $year = date("Y");
 }
 
-$thisurl = new moodle_url('/blocks/mrbs/web/report.php', array('day' => $day, 'month' => $month, 'year' => $year));
+$thisurl = new moodle_url('/blocks/tbs/web/report.php', array('day' => $day, 'month' => $month, 'year' => $year));
 
 if ($area == 0) {
     $area = get_default_area();
@@ -384,7 +384,7 @@ $PAGE->set_url($thisurl);
 require_login();
 
 // print the page header
-print_header_mrbs($day, $month, $year, $area);
+print_header_tbs($day, $month, $year, $area);
 
 if ($submitform) {
     // Resubmit - reapply parameters as defaults.
@@ -421,35 +421,35 @@ if ($submitform) {
 // Upper part: The form.
 if ($pview != 1) {
     ?>
-    <h1><?php echo get_string('report_on', 'block_mrbs'); ?></h1>
+    <h1><?php echo get_string('report_on', 'block_tbs'); ?></h1>
     <form method="get" action="report.php">
         <table>
             <tr>
-                <td class="CR"><?php echo get_string('report_start', 'block_mrbs'); ?></td>
+                <td class="CR"><?php echo get_string('report_start', 'block_tbs'); ?></td>
                 <td class="CL"><font size="-1">
                         <?php genDateSelector("From_", $From_day, $From_month, $From_year); ?>
                     </font></td>
             </tr>
             <tr>
-                <td class="CR"><?php echo get_string('report_end', 'block_mrbs'); ?></td>
+                <td class="CR"><?php echo get_string('report_end', 'block_tbs'); ?></td>
                 <td class="CL"><font size="-1">
                         <?php genDateSelector("To_", $To_day, $To_month, $To_year); ?>
                     </font></td>
             </tr>
             <tr>
-                <td class="CR"><?php echo get_string('match_area', 'block_mrbs'); ?></td>
+                <td class="CR"><?php echo get_string('match_area', 'block_tbs'); ?></td>
                 <td class="CL"><input type="text" name="areamatch" size="18"
                                       value="<?php echo $areamatch_default; ?>">
                 </td>
             </tr>
             <tr>
-                <td class="CR"><?php echo get_string('match_room', 'block_mrbs'); ?></td>
+                <td class="CR"><?php echo get_string('match_room', 'block_tbs'); ?></td>
                 <td class="CL"><input type="text" name="roommatch" size="18"
                                       value="<?php echo $roommatch_default; ?>">
                 </td>
             </tr>
             <tr>
-                <td CLASS=CR><?php echo get_string('match_type', 'block_mrbs') ?></td>
+                <td CLASS=CR><?php echo get_string('match_type', 'block_tbs') ?></td>
                 <td CLASS=CL valign=top>
                     <table>
                         <tr>
@@ -464,92 +464,92 @@ if ($pview != 1) {
                                         }
                                     }
                                     ?></select></td>
-                            <td><?php echo get_string('ctrl_click_type', 'block_mrbs') ?></td>
+                            <td><?php echo get_string('ctrl_click_type', 'block_tbs') ?></td>
                         </tr>
                     </table>
                 </td>
             </tr>
             <tr>
-                <td class="CR"><?php echo get_string('match_entry', 'block_mrbs'); ?></td>
+                <td class="CR"><?php echo get_string('match_entry', 'block_tbs'); ?></td>
                 <td class="CL"><input type="text" name="namematch" size="18"
                                       value="<?php echo $namematch_default; ?>">
                 </td>
             </tr>
             <tr>
-                <td class="CR"><?php echo get_string('match_descr', 'block_mrbs'); ?></td>
+                <td class="CR"><?php echo get_string('match_descr', 'block_tbs'); ?></td>
                 <td class="CL"><input type="text" name="descrmatch" size="18"
                                       value="<?php echo $descrmatch_default; ?>">
                 </td>
             </tr>
             <tr>
-                <td class="CR"><?php echo get_string('createdby', 'block_mrbs'); ?></td>
+                <td class="CR"><?php echo get_string('createdby', 'block_tbs'); ?></td>
                 <td class="CL"><input type="text" name="creatormatch" size="18"
                                       value="<?php echo $creatormatch_default; ?>">
                 </td>
             </tr>
             <tr>
-                <td class="CR"><?php echo get_string('include', 'block_mrbs'); ?></td>
+                <td class="CR"><?php echo get_string('include', 'block_tbs'); ?></td>
                 <td class="CL">
                     <input type="radio" name="summarize" value="1"<?php if ($summarize == 1) {
                         echo " checked";
                     }
-                    echo ">".get_string('report_only', 'block_mrbs'); ?>
+                    echo ">".get_string('report_only', 'block_tbs'); ?>
                     <input type="radio" name="summarize" value="2"<?php if ($summarize == 2) {
                         echo " checked";
                     }
-                    echo ">".get_string('summary_only', 'block_mrbs'); ?>
+                    echo ">".get_string('summary_only', 'block_tbs'); ?>
                     <input type="radio" name="summarize" value="3"<?php if ($summarize == 3) {
                         echo " checked";
                     }
-                    echo ">".get_string('report_and_summary', 'block_mrbs'); ?>
+                    echo ">".get_string('report_and_summary', 'block_tbs'); ?>
                 </td>
             </tr>
             <tr>
-                <td class="CR"><?php echo get_string('sort_rep', 'block_mrbs'); ?></td>
+                <td class="CR"><?php echo get_string('sort_rep', 'block_tbs'); ?></td>
                 <td class="CL">
                     <input type="radio" name="sortby" value="r"<?php if ($sortby == "r") {
                         echo " checked";
                     }
-                    echo ">".get_string('room', 'block_mrbs'); ?>
+                    echo ">".get_string('room', 'block_tbs'); ?>
                     <input type="radio" name="sortby" value="s"<?php if ($sortby == "s") {
                         echo " checked";
                     }
-                    echo ">".get_string('sort_rep_time', 'block_mrbs'); ?>
+                    echo ">".get_string('sort_rep_time', 'block_tbs'); ?>
                 </td>
             </tr>
             <tr>
-                <td class="CR"><?php echo get_string('rep_dsp', 'block_mrbs'); ?></td>
+                <td class="CR"><?php echo get_string('rep_dsp', 'block_tbs'); ?></td>
                 <td class="CL">
                     <input type="radio" name="display" value="d"<?php if ($display == "d") {
                         echo " checked";
                     }
-                    echo ">".get_string('rep_dsp_dur', 'block_mrbs'); ?>
+                    echo ">".get_string('rep_dsp_dur', 'block_tbs'); ?>
                     <input type="radio" name="display" value="e"<?php if ($display == "e") {
                         echo " checked";
                     }
-                    echo ">".get_string('rep_dsp_end', 'block_mrbs'); ?>
+                    echo ">".get_string('rep_dsp_end', 'block_tbs'); ?>
                 </td>
             </tr>
             <tr>
-                <td class="CR"><?php echo get_string('summarize_by', 'block_mrbs'); ?></td>
+                <td class="CR"><?php echo get_string('summarize_by', 'block_tbs'); ?></td>
                 <td class="CL">
                     <input type="radio" name="sumby" value="d"<?php if ($sumby == "d") {
                         echo " checked";
                     }
-                    echo ">".get_string('sum_by_descrip', 'block_mrbs'); ?>
+                    echo ">".get_string('sum_by_descrip', 'block_tbs'); ?>
                     <input type="radio" name="sumby" value="c"<?php if ($sumby == "c") {
                         echo " checked";
                     }
-                    echo ">".get_string('sum_by_creator', 'block_mrbs'); ?>
+                    echo ">".get_string('sum_by_creator', 'block_tbs'); ?>
                 </td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td><?php print_string('help_wildcard', 'block_mrbs'); ?></td>
+                <td><?php print_string('help_wildcard', 'block_tbs'); ?></td>
             </tr>
             <tr>
                 <td colspan="2" align="center"><input name="submitform" type="submit"
-                                                      value="<?php echo get_string('submitquery', 'block_mrbs') ?>">
+                                                      value="<?php echo get_string('submitquery', 'block_tbs') ?>">
                 </td>
             </tr>
         </table>
@@ -578,7 +578,7 @@ if ($submitform) {
 
     $sql = "SELECT e.id, e.start_time, e.end_time, e.name, e.description, "
         ."e.type, e.create_by, e.timestamp, a.area_name, r.room_name"
-        ." FROM {block_mrbs_entry} e, {block_mrbs_area} a, {block_mrbs_room} r"
+        ." FROM {block_tbs_entry} e, {block_tbs_area} a, {block_tbs_room} r"
         ." WHERE e.room_id = r.id AND r.area_id = a.id"
         ." AND e.start_time < ? AND e.end_time > ?";
     $params = array($report_end, $report_start);
@@ -636,7 +636,7 @@ if ($submitform) {
         $last_area_room = "";
         $last_date = "";
         echo "<P><B>".$nmatch." "
-            .($nmatch == 1 ? get_string('entry_found', 'block_mrbs') : get_string('entries_found', 'block_mrbs'))
+            .($nmatch == 1 ? get_string('entry_found', 'block_tbs') : get_string('entries_found', 'block_tbs'))
             ."</B>\n";
 
         foreach ($rep as $item) {

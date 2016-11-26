@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php'); //for 
 global $USER, $DB;
 include "config.inc.php";
 include "functions.php";
-require_once('mrbs_auth.php');
+require_once('tbs_auth.php');
 
 require_login();
 $day = optional_param('day', 0, PARAM_INT);
@@ -110,12 +110,12 @@ if (isset($all_day) && ($all_day == "yes")) {
 }
 
 $sql = 'SELECT r.id, r.room_name, r.description, r.capacity, a.area_name, r.area_id, r.booking_users ';
-$sql .= 'FROM {block_mrbs_room} r JOIN {block_mrbs_area} a on r.area_id=a.id WHERE ';
+$sql .= 'FROM {block_tbs_room} r JOIN {block_tbs_area} a on r.area_id=a.id WHERE ';
 
 $params = array();
 
 if (!empty($day)) {
-    $sql .= "(( SELECT COUNT(*) FROM {block_mrbs_entry} e ";
+    $sql .= "(( SELECT COUNT(*) FROM {block_tbs_entry} e ";
 
     //old booking fully inside new booking
     $sql .= "WHERE ((e.start_time>=:starttime1 AND e.end_time<:endtime1) ";

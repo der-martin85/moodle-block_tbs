@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ if (($day == 0) or ($month == 0) or ($year == 0)) {
     $year = date("Y");
 }
 
-$thisurl = new moodle_url('/blocks/mrbs/web/help.php', array('day' => $day, 'month' => $month, 'year' => $year));
+$thisurl = new moodle_url('/blocks/tbs/web/help.php', array('day' => $day, 'month' => $month, 'year' => $year));
 if ($area > 0) {
     $thisurl->param('area', $area);
 } else {
@@ -48,24 +48,24 @@ if ($area > 0) {
 $PAGE->set_url($thisurl);
 require_login();
 
-print_header_mrbs($day, $month, $year, $area);
+print_header_tbs($day, $month, $year, $area);
 
-echo "<H3>".get_string('about_mrbs', 'block_mrbs')."</H3>\n";
-echo "<P><a href=\"http://mrbs.sourceforge.net\">".get_string('mrbs', 'block_mrbs')."</a> - ".get_mrbs_version()."\n";
-//echo "<BR>" . get_string('database','block_mrbs') . sql_version() . "\n";
-echo "<BR>".get_string('system', 'block_mrbs').php_uname()."\n";
+echo "<H3>".get_string('about_tbs', 'block_tbs')."</H3>\n";
+echo "<P><a href=\"http://tbs.sourceforge.net\">".get_string('tbs', 'block_tbs')."</a> - ".get_tbs_version()."\n";
+//echo "<BR>" . get_string('database','block_tbs') . sql_version() . "\n";
+echo "<BR>".get_string('system', 'block_tbs').php_uname()."\n";
 echo "<BR>PHP: ".phpversion()."\n";
 
 echo "<H3>".get_string('help')."</H3>\n";
-echo get_string('please_contact', 'block_mrbs').'<a href="mailto:'.$mrbs_admin_email
-    .'">'.$mrbs_admin
-    ."</a> ".get_string('for_any_questions', 'block_mrbs')."\n";
+echo get_string('please_contact', 'block_tbs').'<a href="mailto:'.$tbs_admin_email
+    .'">'.$tbs_admin
+    ."</a> ".get_string('for_any_questions', 'block_tbs')."\n";
 
 $lang = current_language();
-if (file_exists($CFG->dirroot.'/blocks/mrbs/lang/'.$lang.'/help/site_faq.html')) {
-    include $CFG->dirroot.'/blocks/mrbs/lang/'.$lang.'/help/site_faq.html';
+if (file_exists($CFG->dirroot.'/blocks/tbs/lang/'.$lang.'/help/site_faq.html')) {
+    include $CFG->dirroot.'/blocks/tbs/lang/'.$lang.'/help/site_faq.html';
 } else {
-    include $CFG->dirroot.'/blocks/mrbs/lang/en/help/site_faq.html';
+    include $CFG->dirroot.'/blocks/tbs/lang/en/help/site_faq.html';
 }
 
 include "trailer.php";

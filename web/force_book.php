@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,12 +17,12 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php');
 
-function mrbsForceMove($room_id, $starttime, $endtime, $name, $id = null) {
+function tbsForceMove($room_id, $starttime, $endtime, $name, $id = null) {
 
     global $USER;
     global $DB;
 
-    $cfg_mrbs = get_config('block/mrbs');
+    $cfg_tbs = get_config('block/tbs');
 
     $output = '';
 
@@ -39,8 +39,8 @@ function mrbsForceMove($room_id, $starttime, $endtime, $name, $id = null) {
         r.room_name,
         r.description,
         r.area_id
-              FROM {block_mrbs_entry} e
-              JOIN {block_mrbs_room} r
+              FROM {block_tbs_entry} e
+              JOIN {block_tbs_room} r
               ON e.room_id = r.id
              WHERE ((e.start_time >= ? AND e.end_time < ?)
              OR (e.start_time < ? AND e.end_time > ?)
@@ -89,12 +89,12 @@ function mrbsForceMove($room_id, $starttime, $endtime, $name, $id = null) {
                                 a.area_name,
                                 IF (r.description = ?, 1, 0) AS sort1,
                                 IF (a.id = ?, 1, 0) AS sort2
-                             FROM {block_mrbs_room} r
-                             JOIN {block_mrbs_area} a
+                             FROM {block_tbs_room} r
+                             JOIN {block_tbs_area} a
                                 ON r.area_id = a.id
-                             JOIN {block_mrbs_entry} e
+                             JOIN {block_tbs_entry} e
                                 ON r.id= e.room_id
-                             WHERE ( SELECT COUNT(*) FROM {block_mrbs_entry} e2
+                             WHERE ( SELECT COUNT(*) FROM {block_tbs_entry} e2
                                  WHERE ((e2.start_time >= ? AND e2.end_time < ?)
                                  OR (e2.start_time < ? AND e2.end_time > ?)
                                  OR (e2.start_time < ? AND e2.end_time >= ?))
@@ -124,7 +124,7 @@ function mrbsForceMove($room_id, $starttime, $endtime, $name, $id = null) {
 
         $findroomresult = $DB->get_record_sql($findroomquery, $params);
 
-        $subject = get_string('bookingmoved', 'block_mrbs');
+        $subject = get_string('bookingmoved', 'block_tbs');
         $langvars = new stdClass;
         $langvars->name = $oldbooking->entryname;
         $langvars->id = $oldbooking->entryid;
@@ -145,13 +145,13 @@ function mrbsForceMove($room_id, $starttime, $endtime, $name, $id = null) {
         } else {
             $booking->type = $oldbooking->type;
         }
-        if ($findroomresult and $DB->update_record('block_mrbs_entry', $booking) and $oldbookingowner = $DB->get_record('user', array('username' => $oldbooking->create_by))) {
-            $message = get_string('bookingmovedmessage', 'block_mrbs', $langvars);
-            $output .= '<br>'.get_string('bookingmovedshort', 'block_mrbs', $langvars);
+        if ($findroomresult and $DB->update_record('block_tbs_entry', $booking) and $oldbookingowner = $DB->get_record('user', array('username' => $oldbooking->create_by))) {
+            $message = get_string('bookingmovedmessage', 'block_tbs', $langvars);
+            $output .= '<br>'.get_string('bookingmovedshort', 'block_tbs', $langvars);
             email_to_user($oldbookingowner, $USER, $subject, $message);
         } else {
-            $output .= '<br>'.get_string('bookingmoveerrorshort', 'block_mrbs', $langvars);
-            mail($cfg_mrbs->admin_email, get_string('bookingmoveerror', 'block_mrbs'), get_string('bookingmoveerrormessage', 'block_mrbs', $langvars));
+            $output .= '<br>'.get_string('bookingmoveerrorshort', 'block_tbs', $langvars);
+            mail($cfg_tbs->admin_email, get_string('bookingmoveerror', 'block_tbs'), get_string('bookingmoveerrormessage', 'block_tbs', $langvars));
         }
     }
 

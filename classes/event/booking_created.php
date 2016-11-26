@@ -15,21 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The block_mrbs booking created event.
+ * The block_tbs booking created event.
  *
- * @package    block_mrbs
+ * @package    block_tbs
  * @copyright  2014 Davo Smith <moodle@davosmith.co.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_mrbs\event;
+namespace block_tbs\event;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The block_mrbs booking created event.
+ * The block_tbs booking created event.
  *
- * @package    block_mrbs
+ * @package    block_tbs
  * @since      Moodle 2.7
  * @copyright  2014 Davo Smith <moodle@davosmith.co.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -44,7 +44,7 @@ class booking_created extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_OTHER;
-        $this->data['objecttable'] = 'block_mrbs_entry';
+        $this->data['objecttable'] = 'block_tbs_entry';
         $this->context = \context_system::instance();
     }
 
@@ -54,7 +54,7 @@ class booking_created extends \core\event\base {
      * @return string
      */
     public static function get_name() {
-        return get_string('eventbookingcreated', 'block_mrbs');
+        return get_string('eventbookingcreated', 'block_tbs');
     }
 
     /**
@@ -72,7 +72,7 @@ class booking_created extends \core\event\base {
      * @return \moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/blocks/mrbs/web/view_entry.php', array('id' => $this->objectid));
+        return new \moodle_url('/blocks/tbs/web/view_entry.php', array('id' => $this->objectid));
     }
 
     /**
@@ -82,7 +82,7 @@ class booking_created extends \core\event\base {
      */
     protected function get_legacy_logdata() {
         global $CFG;
-        return array(SITEID, 'mrbs', 'add booking', $CFG->wwwroot.'blocks/mrbs/web/view_entry.php?id='.$this->objectid,
+        return array(SITEID, 'tbs', 'add booking', $CFG->wwwroot.'blocks/tbs/web/view_entry.php?id='.$this->objectid,
                      $this->other['name']);
     }
 

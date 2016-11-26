@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@ require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php'); //for 
 global $PAGE;
 include "config.inc.php";
 include "functions.php";
-require_once('mrbs_auth.php');
-include "mrbs_sql.php";
+require_once('tbs_auth.php');
+include "tbs_sql.php";
 
 $room = required_param('room', PARAM_TEXT);
 $day = optional_param('day', 0, PARAM_INT);
@@ -39,7 +39,7 @@ if (($day == 0) or ($month == 0) or ($year == 0)) {
     }
 }
 
-$thisurl = new moodle_url('/blocks/mrbs/web/gotoroom.php', array(
+$thisurl = new moodle_url('/blocks/tbs/web/gotoroom.php', array(
     'day' => $day, 'month' => $month, 'year' => $year, 'room' => $room
 ));
 $PAGE->set_url($thisurl);
@@ -50,15 +50,15 @@ if (!getAuthorised(1)) {
     exit;
 }
 
-$sql = "SELECT area_id, area_name FROM {block_mrbs_room} AS r JOIN {block_mrbs_area} AS a ON a.id = r.area_id WHERE room_name = ? OR room_name = ?";
+$sql = "SELECT area_id, area_name FROM {block_tbs_room} AS r JOIN {block_tbs_area} AS a ON a.id = r.area_id WHERE room_name = ? OR room_name = ?";
 
 $area = $DB->get_record_sql($sql, array($room, '0'.$room), IGNORE_MULTIPLE);
 if ($area) {
-    $areaurl = new moodle_url('/blocks/mrbs/web/day.php',
+    $areaurl = new moodle_url('/blocks/tbs/web/day.php',
                               array('day' => $day, 'month' => $month, 'year' => $year, 'area' => $area->area_id));
     redirect($areaurl);
 } else {
-    $notfoundurl = new moodle_url('/blocks/mrbs/web/day.php',
+    $notfoundurl = new moodle_url('/blocks/tbs/web/day.php',
                                   array('day' => $day, 'month' => $month, 'year' => $year, 'roomnotfound' => $room));
     redirect($notfoundurl);
 }

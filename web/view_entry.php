@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -32,18 +32,18 @@ $pview = optional_param('pview', 0, PARAM_INT);
 $context = context_system::instance();
 
 //if the booking belongs to the user looking at it, they probably want to edit it
-if ($record = $DB->get_record('block_mrbs_entry', array('id' => $id))) {
+if ($record = $DB->get_record('block_tbs_entry', array('id' => $id))) {
     if (strtolower($record->create_by) == strtolower($USER->username)) {
         $redirect = true;
-        if (has_capability('block/mrbs:editmrbsunconfirmed', $context, null, false)) {
-            if ($USER->email != $DB->get_field('block_mrbs_room', 'room_admin_email', array('id' => $record->room_id))) {
+        if (has_capability('block/tbs:edittbsunconfirmed', $context, null, false)) {
+            if ($USER->email != $DB->get_field('block_tbs_room', 'room_admin_email', array('id' => $record->room_id))) {
                 if ($record->type != 'U') {
                     $redirect = false;  // Do not redirect to edit screen if the booking is confirmed
                 }
             }
         }
         if ($redirect) {
-            redirect(new moodle_url('/blocks/mrbs/web/edit_entry.php', array('id' => $id)));
+            redirect(new moodle_url('/blocks/tbs/web/edit_entry.php', array('id' => $id)));
         }
     }
 }
@@ -55,7 +55,7 @@ if (($day == 0) or ($month == 0) or ($year == 0)) {
     $year = date("Y");
 }
 
-$thisurl = new moodle_url('/blocks/mrbs/web/view_entry.php', array('day' => $day, 'month' => $month, 'year' => $year, 'id' => $id));
+$thisurl = new moodle_url('/blocks/tbs/web/view_entry.php', array('day' => $day, 'month' => $month, 'year' => $year, 'id' => $id));
 
 if ($area) {
     $thisurl->param('area', $area);
@@ -94,7 +94,7 @@ if ($series) {
             re.rep_num_weeks,
             u.id as userid,
             $namefields
-            FROM  {block_mrbs_repeat} re left join {user} u on u.username = re.create_by, {block_mrbs_room} r, {block_mrbs_area} a
+            FROM  {block_tbs_repeat} re left join {user} u on u.username = re.create_by, {block_tbs_room} r, {block_tbs_area} a
             WHERE re.room_id = r.id
             AND r.area_id = a.id
             AND re.id= ?";
@@ -113,7 +113,7 @@ if ($series) {
             e.repeat_id,
             u.id as userid,
             $namefields
-            FROM  {block_mrbs_entry} e left join {user} u on u.username = e.create_by, {block_mrbs_room} r, {block_mrbs_area} a
+            FROM  {block_tbs_entry} e left join {user} u on u.username = e.create_by, {block_tbs_room} r, {block_tbs_area} a
             WHERE e.room_id = r.id
             AND r.area_id = a.id
             AND e.id= ?";
@@ -123,7 +123,7 @@ $booking = $DB->get_record_sql($sql, array($id), MUST_EXIST);
 $booking->fullname = fullname($booking);
 
 // Note: Removed stripslashes() calls from name and description. Previous
-// versions of MRBS mistakenly had the backslash-escapes in the actual database
+// versions of TBS mistakenly had the backslash-escapes in the actual database
 // records because of an extra addslashes going on. Fix your database and
 // leave this code alone, please.
 $name = s($booking->name);
@@ -164,7 +164,7 @@ if ($series == 1) {
     // edit_entry.php
     // So I will look for the first entry in the series where the entry is
     // as per the original series settings
-    $entry = $DB->get_records('block_mrbs_entry', array('repeat_id' => $id, 'entry_type' => 1), 'start_time', 'id', 0, 1);
+    $entry = $DB->get_records('block_tbs_entry', array('repeat_id' => $id, 'entry_type' => 1), 'start_time', 'id', 0, 1);
     if (empty($entry)) {
         // if all entries in series have been modified then
         // as a fallback position just select the first entry
@@ -172,14 +172,14 @@ if ($series == 1) {
         // hopefully this code will never be reached as
         // this page will display the start time of the series
         // but edit_entry.php will display the start time of the entry
-        $entry = $DB->get_records('block_mrbs_entry', array('repeat_id' => $id), 'start_time', 'id', 0, 1);
+        $entry = $DB->get_records('block_tbs_entry', array('repeat_id' => $id), 'start_time', 'id', 0, 1);
     }
     $entry = reset($entry); // Get the first (and only) record
     $id = $entry->id;
 } else {
     $repeat_id = $booking->repeat_id;
     if ($repeat_id != 0) {
-        $repeat = $DB->get_record('block_mrbs_repeat', array('id' => $repeat_id));
+        $repeat = $DB->get_record('block_tbs_repeat', array('id' => $repeat_id));
         if ($repeat) {
             $rep_type = $repeat->rep_type;
             $rep_end_date = userdate($repeat->end_date, '%A %d %B %Y');
@@ -194,18 +194,18 @@ $enable_periods ? toPeriodString($start_period, $duration, $dur_units) : toTimeS
 $repeat_key = "rep_type_".$rep_type;
 
 $roomadmin = false;
-if (has_capability('block/mrbs:editmrbsunconfirmed', $context, null, false)) {
-    $adminemail = $DB->get_field('block_mrbs_room', 'room_admin_email', array('id' => $booking->room_id));
+if (has_capability('block/tbs:edittbsunconfirmed', $context, null, false)) {
+    $adminemail = $DB->get_field('block_tbs_room', 'room_admin_email', array('id' => $booking->room_id));
     if ($adminemail == $USER->email) {
         $roomadmin = true;
     }
 }
 
 if ($roomadmin && $type == 'U') {
-    redirect(new moodle_url('/blocks/mrbs/web/edit_entry.php', array('id' => $id)));
+    redirect(new moodle_url('/blocks/tbs/web/edit_entry.php', array('id' => $id)));
 }
 // Now that we know all the data we start drawing it
-print_header_mrbs($day, $month, $year, $area);
+print_header_tbs($day, $month, $year, $area);
 ?>
 
     <H3>
@@ -234,27 +234,27 @@ print_header_mrbs($day, $month, $year, $area);
             <td><?php echo nl2br($description) ?></td>
         </tr>
         <tr>
-            <td><b><?php echo get_string('room', 'block_mrbs').":" ?></b></td>
+            <td><b><?php echo get_string('room', 'block_tbs').":" ?></b></td>
             <td><?php echo nl2br($area_name." - ".$room_name) ?></td>
         </tr>
         <tr>
-            <td><b><?php echo get_string('start_date', 'block_mrbs') ?></b></td>
+            <td><b><?php echo get_string('start_date', 'block_tbs') ?></b></td>
             <td><?php echo $start_date ?></td>
         </tr>
         <tr>
-            <td><b><?php echo get_string('duration', 'block_mrbs') ?></b></td>
+            <td><b><?php echo get_string('duration', 'block_tbs') ?></b></td>
             <td><?php echo $duration." ".$dur_units ?></td>
         </tr>
         <tr>
-            <td><b><?php echo get_string('end_date', 'block_mrbs') ?></b></td>
+            <td><b><?php echo get_string('end_date', 'block_tbs') ?></b></td>
             <td><?php echo $end_date ?></td>
         </tr>
         <tr>
-            <td><b><?php echo get_string('type', 'block_mrbs') ?></b></td>
+            <td><b><?php echo get_string('type', 'block_tbs') ?></b></td>
             <td><?php echo empty($typel[$type]) ? "?$type?" : $typel[$type] ?></td>
         </tr>
         <tr>
-            <td><b><?php echo get_string('createdby', 'block_mrbs') ?></b></td>
+            <td><b><?php echo get_string('createdby', 'block_tbs') ?></b></td>
             <td><?php echo $create_by ?></td>
         </tr>
         <tr>
@@ -262,8 +262,8 @@ print_header_mrbs($day, $month, $year, $area);
             <td><?php echo $updated ?></td>
         </tr>
         <tr>
-            <td><b><?php echo get_string('rep_type', 'block_mrbs') ?></b></td>
-            <td><?php echo get_string($repeat_key, 'block_mrbs') ?></td>
+            <td><b><?php echo get_string('rep_type', 'block_tbs') ?></b></td>
+            <td><?php echo get_string($repeat_key, 'block_tbs') ?></td>
         </tr>
 
         <?php
@@ -280,12 +280,12 @@ print_header_mrbs($day, $month, $year, $area);
                 }
             }
             if ($rep_type == 6) {
-                echo "<tr><td><b>".get_string('rep_num_weeks', 'block_mrbs').get_string('rep_for_nweekly', 'block_mrbs')."</b></td><td>$rep_num_weeks</td></tr>\n";
+                echo "<tr><td><b>".get_string('rep_num_weeks', 'block_tbs').get_string('rep_for_nweekly', 'block_tbs')."</b></td><td>$rep_num_weeks</td></tr>\n";
             }
             if ($opt) {
-                echo "<tr><td><b>".get_string('rep_rep_day', 'block_mrbs')."</b></td><td>$opt</td></tr>\n";
+                echo "<tr><td><b>".get_string('rep_rep_day', 'block_tbs')."</b></td><td>$opt</td></tr>\n";
             }
-            echo "<tr><td><b>".get_string('rep_end_date', 'block_mrbs')."</b></td><td>$rep_end_date</td></tr>\n";
+            echo "<tr><td><b>".get_string('rep_end_date', 'block_tbs')."</b></td><td>$rep_end_date</td></tr>\n";
         }
 
         ?>
@@ -299,24 +299,24 @@ print_header_mrbs($day, $month, $year, $area);
 $canedit = getWritable($booking->create_by, getUserName());
 if ($canedit || $roomadmin) {
     if (!$series) {
-        $editurl = new moodle_url('/blocks/mrbs/web/edit_entry.php', array('id' => $id));
-        echo '<a href="'.$editurl.'">'.get_string('editentry', 'block_mrbs')."</a>";
+        $editurl = new moodle_url('/blocks/tbs/web/edit_entry.php', array('id' => $id));
+        echo '<a href="'.$editurl.'">'.get_string('editentry', 'block_tbs')."</a>";
     }
     if ($repeat_id) {
         echo " - ";
     }
     if ($repeat_id || $series) {
-        $editurl = new moodle_url('/blocks/mrbs/web/edit_entry.php', array(
+        $editurl = new moodle_url('/blocks/tbs/web/edit_entry.php', array(
             'id' => $id, 'edit_type' => 'series', 'day' => $day, 'month' => $month, 'year' => $year
         ));
-        echo '<a href="'.$editurl.'">'.get_string('editseries', 'block_mrbs')."</a>";
+        echo '<a href="'.$editurl.'">'.get_string('editseries', 'block_tbs')."</a>";
     }
 
     echo '<br />';
 
     if (!$series) {
-        $delurl = new moodle_url('/blocks/mrbs/web/del_entry.php', array('id' => $id, 'series' => 0, 'sesskey' => sesskey()));
-        echo '<A HREF="'.$delurl.'" onClick="return confirm("'.get_string('confirmdel', 'block_mrbs').'");">'.get_string('deleteentry', 'block_mrbs')."</A>";
+        $delurl = new moodle_url('/blocks/tbs/web/del_entry.php', array('id' => $id, 'series' => 0, 'sesskey' => sesskey()));
+        echo '<A HREF="'.$delurl.'" onClick="return confirm("'.get_string('confirmdel', 'block_tbs').'");">'.get_string('deleteentry', 'block_tbs')."</A>";
     }
 
     if ($repeat_id) {
@@ -324,10 +324,10 @@ if ($canedit || $roomadmin) {
     }
 
     if ($repeat_id || $series) {
-        $delurl = new moodle_url('/blocks/mrbs/web/del_entry.php', array(
+        $delurl = new moodle_url('/blocks/tbs/web/del_entry.php', array(
             'id' => $id, 'series' => 1, 'sesskey' => sesskey(), 'day' => $day, 'month' => $month, 'year' => $year
         ));
-        echo '<A HREF="'.$delurl.'" onClick="return confirm("'.get_string('confirmdel', 'block_mrbs').'");">'.get_string('deleteseries', 'block_mrbs')."</A>";
+        echo '<A HREF="'.$delurl.'" onClick="return confirm("'.get_string('confirmdel', 'block_tbs').'");">'.get_string('deleteseries', 'block_tbs')."</A>";
     }
 } // Writable
 ?>

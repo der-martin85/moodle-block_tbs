@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,28 +20,28 @@ require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php'); //for 
 // $pview must be defined. if it's not then there's errors generated all
 // over the place. so we test to see if it is set, and if not then set
 // it.
-require_once('mrbs_auth.php');
+require_once('tbs_auth.php');
 
 $pview = optional_param('pview', 0, PARAM_INT);
 
-function print_user_header_mrbs($day = null, $month = null, $year = null, $area = null) {
-    print_header_mrbs($day, $month, $year, $area, true);
+function print_user_header_tbs($day = null, $month = null, $year = null, $area = null) {
+    print_header_tbs($day, $month, $year, $area, true);
 }
 
-function print_header_mrbs($day = null, $month = null, $year = null, $area = null, $userview = false) //if values are not passed assume NULL
+function print_header_tbs($day = null, $month = null, $year = null, $area = null, $userview = false) //if values are not passed assume NULL
 {
     global $search_str, $locale_warning, $pview;
     global $OUTPUT, $PAGE, $USER;
     global $javascript_cursor;
 
-    $strmrbs = get_string('blockname', 'block_mrbs');
+    $strtbs = get_string('blockname', 'block_tbs');
 
     if (!$site = get_site()) {
         redirect(new moodle_url('/admin/index.php'));
     }
 
     $context = context_system::instance();
-    require_capability('block/mrbs:viewmrbs', $context);
+    require_capability('block/tbs:viewtbs', $context);
 
     // If we dont know the right date then make it up
     if (!$day) {
@@ -61,15 +61,15 @@ function print_header_mrbs($day = null, $month = null, $year = null, $area = nul
 
     /// Print the header
     $PAGE->set_context($context);
-    $PAGE->navbar->add($strmrbs);
+    $PAGE->navbar->add($strtbs);
     $PAGE->set_pagelayout('incourse');
-    $PAGE->set_title($strmrbs);
-    $PAGE->set_heading(format_string($strmrbs));
+    $PAGE->set_title($strtbs);
+    $PAGE->set_heading(format_string($strtbs));
 
     // Load extra javascript
-    $PAGE->requires->js('/blocks/mrbs/web/roomsearch.js', true); // For the 'ChangeOptionDays' function
+    $PAGE->requires->js('/blocks/tbs/web/roomsearch.js', true); // For the 'ChangeOptionDays' function
     if ($javascript_cursor) {
-        $PAGE->requires->js('/blocks/mrbs/web/xbLib.js', true);
+        $PAGE->requires->js('/blocks/tbs/web/xbLib.js', true);
     }
 
     echo $OUTPUT->header();
@@ -85,36 +85,36 @@ function print_header_mrbs($day = null, $month = null, $year = null, $area = nul
     echo '"'.get_string('sun', 'calendar').'"';
     echo ');</script>';
 
-    echo '<div id="mrbscontainer">';
+    echo '<div id="tbscontainer">';
 
     if ($pview != 1) {
         if (!empty($locale_warning)) {
             echo "[Warning: ".$locale_warning."]";
         }
 
-        $titlestr = get_string('mrbs', 'block_mrbs');
-        $homeurl = new moodle_url('/blocks/mrbs/web/index.php');
+        $titlestr = get_string('tbs', 'block_tbs');
+        $homeurl = new moodle_url('/blocks/tbs/web/index.php');
 
-        $gotostr = get_string('goto', 'block_mrbs');
-        $gotourl = new moodle_url('/blocks/mrbs/web/day.php');
+        $gotostr = get_string('goto', 'block_tbs');
+        $gotourl = new moodle_url('/blocks/tbs/web/day.php');
         if ($userview) {
-            $gotourl = new moodle_url('/blocks/mrbs/web/userweek.php');
+            $gotourl = new moodle_url('/blocks/tbs/web/userweek.php');
         }
 
-        $roomsearchstr = get_string('roomsearch', 'block_mrbs');
-        $roomsearchurl = new moodle_url('/blocks/mrbs/web/roomsearch.php');
+        $roomsearchstr = get_string('roomsearch', 'block_tbs');
+        $roomsearchurl = new moodle_url('/blocks/tbs/web/roomsearch.php');
 
         $helpstr = get_string('help');
-        $helpurl = new moodle_url('/blocks/mrbs/web/help.php', array('day' => $day, 'month' => $month, 'year' => $year));
+        $helpurl = new moodle_url('/blocks/tbs/web/help.php', array('day' => $day, 'month' => $month, 'year' => $year));
 
         $adminstr = get_string('admin');
-        $adminurl = new moodle_url('/blocks/mrbs/web/admin.php', array('day' => $day, 'month' => $month, 'year' => $year));
+        $adminurl = new moodle_url('/blocks/tbs/web/admin.php', array('day' => $day, 'month' => $month, 'year' => $year));
 
         $reportstr = get_string('report');
-        $reporturl = new moodle_url('/blocks/mrbs/web/report.php');
+        $reporturl = new moodle_url('/blocks/tbs/web/report.php');
 
         $searchstr = get_string('search');
-        $searchurl = new moodle_url('/blocks/mrbs/web/search.php');
+        $searchurl = new moodle_url('/blocks/tbs/web/search.php');
         $searchadvurl = new moodle_url($searchurl, array('advanced' => 1));
 
         $level = authGetUserLevel($USER->id);
@@ -155,9 +155,9 @@ HTML1END;
               </TD>
 HTML2END;
         if (!$userview) {
-            if (has_capability("block/mrbs:forcebook", $context)) {
+            if (has_capability("block/tbs:forcebook", $context)) {
                 echo '<TD CLASS="banner" BGCOLOR="#C0E0FF" ALIGN=CENTER>
-                  <a href="edit_entry.php?force=TRUE">'.get_string('forciblybook', 'block_mrbs').'</a>
+                  <a href="edit_entry.php?force=TRUE">'.get_string('forciblybook', 'block_tbs').'</a>
               </TD>';
             }
 
@@ -208,13 +208,13 @@ function toTimeString(&$dur, &$units) {
                         $dur /= 52;
                         $units = get_string('years');
                     } else {
-                        $units = get_string('weeks', 'block_mrbs');
+                        $units = get_string('weeks', 'block_tbs');
                     }
                 } else {
                     $units = get_string('days');
                 }
             } else {
-                $units = get_string('hours', 'block_mrbs');
+                $units = get_string('hours', 'block_tbs');
             }
         } else {
             $units = get_string('minutes');
@@ -246,11 +246,11 @@ function toPeriodString($start_period, &$dur, &$units) {
         } else {
             $dur *= 60;
             $dur = ($dur % $max_periods) + floor($dur / (24 * 60)) * $max_periods;
-            $units = get_string('periods', 'block_mrbs');
+            $units = get_string('periods', 'block_tbs');
             return;
         }
     } else {
-        $units = get_string('periods', 'block_mrbs');
+        $units = get_string('periods', 'block_tbs');
     }
 }
 
@@ -329,7 +329,7 @@ function genDateSelector($prefix, $day, $month, $year, $updatefreerooms = false,
 // caller did that. Alway outputs the bottom of the page and exits.
 function fatal_error($need_header, $message) {
     if ($need_header) {
-        print_header_mrbs(0, 0, 0, 0);
+        print_header_tbs(0, 0, 0, 0);
     }
     echo $message;
     include "trailer.php";
@@ -343,7 +343,7 @@ function get_default_area() {
     global $DB;
 
     // Get first area in database
-    $area = $DB->get_records('block_mrbs_area', null, 'area_name', 'id', 0, 1);
+    $area = $DB->get_records('block_tbs_area', null, 'area_name', 'id', 0, 1);
     if (empty($area)) {
         return 0;
     }
@@ -359,7 +359,7 @@ function get_default_room($area) {
     global $DB;
 
     // Get first room in database
-    $room = $DB->get_records('block_mrbs_room', array('area_id' => $area), 'room_name', 'id', 0, 1);
+    $room = $DB->get_records('block_tbs_room', array('area_id' => $area), 'room_name', 'id', 0, 1);
     if (empty($room)) {
         return 0;
     }
@@ -487,7 +487,7 @@ function make_area_select_html($link, $current, $year, $month, $day) {
 <form name=\"areaChangeForm\" method=get action=\"$link\">
   <select name=\"area\" onChange=\"document.areaChangeForm.submit()\">";
 
-    $areas = $DB->get_records('block_mrbs_area', null, 'area_name');
+    $areas = $DB->get_records('block_tbs_area', null, 'area_name');
     foreach ($areas as $area) {
         $selected = ($area->id == $current) ? "selected" : "";
         $out_html .= "
@@ -512,7 +512,7 @@ function make_room_select_html($link, $area, $current, $year, $month, $day) {
 <form name=\"roomChangeForm\" method=get action=\"$link\">
   <select name=\"room\" onChange=\"document.roomChangeForm.submit()\">";
 
-    $rooms = $DB->get_records('block_mrbs_room', array('area_id' => $area), 'room_name');
+    $rooms = $DB->get_records('block_tbs_room', array('area_id' => $area), 'room_name');
     foreach ($rooms as $room) {
         $selected = ($room->id == $current) ? "selected" : "";
         $out_html .= "
@@ -578,14 +578,14 @@ function cross_dst($start, $end) {
  * c.i.php.
  *
  * @param string $string string to convert
- * @return string   $string   string converted to get_string('charset','block_mrbs') [i.e. the character set of the MRBS block
+ * @return string   $string   string converted to get_string('charset','block_tbs') [i.e. the character set of the TBS block
  *     language pack
  */
 function removeMailUnicode($string) {
     global $unicode_encoding;
     //
     if ($unicode_encoding) {
-        return iconv("utf-8", get_string('charset', 'block_mrbs'), $string);
+        return iconv("utf-8", get_string('charset', 'block_tbs'), $string);
     } else {
         return $string;
     }
@@ -666,11 +666,11 @@ function notifyAdminOnBooking($new_entry, $new_id, $modified_enddate = null) {
         // Look for list of area admins emails addresses
         if ($new_entry) {
             $sql = "SELECT a.area_admin_email ";
-            $sql .= "FROM {block_mrbs_room} r, {block_mrbs_area} a, {block_mrbs_entry} e ";
+            $sql .= "FROM {block_tbs_room} r, {block_tbs_area} a, {block_tbs_entry} e ";
             // If this is a repeating entry...
             if ($id_table == 'rep') {
                 // ...use the repeat table
-                $sql .= ", {block_mrbs_repeat} rep ";
+                $sql .= ", {block_tbs_repeat} rep ";
             }
             $sql .= "WHERE ${id_table}.id=? AND r.id=${id_table}.room_id AND a.id=r.area_id";
             $emails = $DB->get_records_sql($sql, array($new_id), 0, 1);
@@ -692,11 +692,11 @@ function notifyAdminOnBooking($new_entry, $new_id, $modified_enddate = null) {
         // Look for list of room admins emails addresses
         if ($new_entry) {
             $sql = "SELECT r.room_admin_email ";
-            $sql .= "FROM {block_mrbs_room} r, {block_mrbs_entry} e ";
+            $sql .= "FROM {block_tbs_room} r, {block_tbs_entry} e ";
             // If this is a repeating entry...
             if ($id_table == 'rep') {
                 // ...use the repeat table
-                $sql .= ", {block_mrbs_repeat} rep ";
+                $sql .= ", {block_tbs_repeat} rep ";
             }
             $sql .= "WHERE ${id_table}.id= ? AND r.id=${id_table}.room_id";
             $emails = $DB->get_records_sql($sql, array($new_id), 0, 1);
@@ -714,7 +714,7 @@ function notifyAdminOnBooking($new_entry, $new_id, $modified_enddate = null) {
         }
     }
     if (MAIL_BOOKER) {
-        if ('moodle' == $auth['type']) { //this was previously for the db authentication type but I am hijacking it for the MRBS Moodle block to lookup the user's email
+        if ('moodle' == $auth['type']) { //this was previously for the db authentication type but I am hijacking it for the TBS Moodle block to lookup the user's email
             /* It would be possible to move this query within the query in
                getPreviousEntryData to have all in one central place and to
                reduce database hits by one. However this is a bad idea. If a
@@ -755,16 +755,16 @@ function notifyAdminOnBooking($new_entry, $new_id, $modified_enddate = null) {
     $subjdetails->room = $room_name;
     $subjdetails->entry_type = $typel[$type];
     if ($new_entry) {
-        $subject = get_string('mail_subject_newentry', 'block_mrbs', $subjdetails);
+        $subject = get_string('mail_subject_newentry', 'block_tbs', $subjdetails);
     } else {
-        $subject = get_string('mail_subject_entry', 'block_mrbs', $subjdetails);
+        $subject = get_string('mail_subject_entry', 'block_tbs', $subjdetails);
     }
     $subject = str_replace('&nbsp;', ' ', $subject);
 
     if ($new_entry) {
-        $body = get_string('mail_body_new_entry', 'block_mrbs').": \n\n";
+        $body = get_string('mail_body_new_entry', 'block_tbs').": \n\n";
     } else {
-        $body = get_string('mail_body_changed_entry', 'block_mrbs').": \n\n";
+        $body = get_string('mail_body_changed_entry', 'block_tbs').": \n\n";
     }
     // Set the link to view entry page
     if (isset($url_base) && ($url_base != "")) {
@@ -779,7 +779,7 @@ function notifyAdminOnBooking($new_entry, $new_id, $modified_enddate = null) {
     $body .= "\n";
     // Displays/don't displays entry details
     if (MAIL_DETAILS) {
-        $body .= "\n".get_string('namebooker', 'block_mrbs').": ";
+        $body .= "\n".get_string('namebooker', 'block_tbs').": ";
         $body .= compareEntries(removeMailUnicode($name),
                                 removeMailUnicode($mail_previous['namebooker']), $new_entry)."\n";
 
@@ -789,7 +789,7 @@ function notifyAdminOnBooking($new_entry, $new_id, $modified_enddate = null) {
                                 removeMailUnicode($mail_previous['description']), $new_entry)."\n";
 
         // Room:
-        $body .= get_string('room', 'block_mrbs').": ".
+        $body .= get_string('room', 'block_tbs').": ".
             compareEntries(removeMailUnicode($area_name),
                            removeMailUnicode($mail_previous['area_name']), $new_entry);
         $body .= " - ".compareEntries(removeMailUnicode($room_name),
@@ -799,17 +799,17 @@ function notifyAdminOnBooking($new_entry, $new_id, $modified_enddate = null) {
         if ($enable_periods) {
             list($start_period, $start_date) =
                 getMailPeriodDateString($starttime);
-            $body .= get_string('start_date', 'block_mrbs').": ";
+            $body .= get_string('start_date', 'block_tbs').": ";
             $body .= compareEntries(unHtmlEntities($start_date),
                                     unHtmlEntities($mail_previous['start_date']), $new_entry)."\n";
         } else {
             $start_date = getMailTimeDateString($starttime);
-            $body .= get_string('start_date', 'block_mrbs').": ".
+            $body .= get_string('start_date', 'block_tbs').": ".
                 compareEntries($start_date, $mail_previous['start_date'], $new_entry)."\n";
         }
 
         // Duration
-        $body .= get_string('duration', 'block_mrbs').": ".
+        $body .= get_string('duration', 'block_tbs').": ".
             compareEntries($duration, $mail_previous['duration'], $new_entry);
         $body .= " ".compareEntries($dur_units, $mail_previous['dur_units'], $new_entry)."\n";
 
@@ -818,18 +818,18 @@ function notifyAdminOnBooking($new_entry, $new_id, $modified_enddate = null) {
             $myendtime = $endtime;
             $mod_time = -1;
             list($end_period, $end_date) = getMailPeriodDateString($myendtime, $mod_time);
-            $body .= get_string('end_date', 'block_mrbs').": ";
+            $body .= get_string('end_date', 'block_tbs').": ";
             $body .= compareEntries(unHtmlEntities($end_date),
                                     unHtmlEntities($mail_previous['end_date']), $new_entry)."\n";
         } else {
             $myendtime = $endtime;
             $end_date = getMailTimeDateString($myendtime);
-            $body .= get_string('end_date', 'block_mrbs').": ".
+            $body .= get_string('end_date', 'block_tbs').": ".
                 compareEntries($end_date, $mail_previous['end_date'], $new_entry)."\n";
         }
 
         // Type of booking
-        $body .= get_string('type', 'block_mrbs').": ";
+        $body .= get_string('type', 'block_tbs').": ";
         if ($new_entry) {
             $body .= $typel[$type];
         } else {
@@ -838,7 +838,7 @@ function notifyAdminOnBooking($new_entry, $new_id, $modified_enddate = null) {
         }
 
         // Created by
-        $body .= "\n".get_string('createdby', 'block_mrbs').": ".
+        $body .= "\n".get_string('createdby', 'block_tbs').": ".
             compareEntries($create_by, $mail_previous['createdby'], $new_entry)."\n";
 
         // Last updated
@@ -846,13 +846,13 @@ function notifyAdminOnBooking($new_entry, $new_id, $modified_enddate = null) {
             compareEntries(getMailTimeDateString(time()), $mail_previous['updated'], $new_entry);
 
         // Repeat Type
-        $body .= "\n".get_string('rep_type', 'block_mrbs');
+        $body .= "\n".get_string('rep_type', 'block_tbs');
         if ($new_entry) {
-            $body .= ": ".get_string('rep_type_'.$rep_type, 'block_mrbs');
+            $body .= ": ".get_string('rep_type_'.$rep_type, 'block_tbs');
         } else {
             $temp = $mail_previous['rep_type'];
-            $body .= ": ".compareEntries(get_string('rep_type_'.$rep_type, 'block_mrbs'),
-                                         get_string('rep_type_'.$temp, 'block_mrbs'), $new_entry);
+            $body .= ": ".compareEntries(get_string('rep_type_'.$rep_type, 'block_tbs'),
+                                         get_string('rep_type_'.$temp, 'block_tbs'), $new_entry);
         }
 
         // Details if a series
@@ -868,16 +868,16 @@ function notifyAdminOnBooking($new_entry, $new_id, $modified_enddate = null) {
                 }
             }
             if ($rep_type == 6) {
-                $body .= "\n".get_string('rep_num_weeks', 'block_mrbs');
+                $body .= "\n".get_string('rep_num_weeks', 'block_tbs');
                 $body .= ": ".compareEntries($rep_num_weeks, $mail_previous["rep_num_weeks"], $new_entry);
             }
 
             if ($opt || $mail_previous["rep_opt"]) {
-                $body .= "\n".get_string('rep_rep_day', 'block_mrbs');
+                $body .= "\n".get_string('rep_rep_day', 'block_tbs');
                 $body .= ": ".compareEntries($opt, $mail_previous["rep_opt"], $new_entry);
             }
 
-            $body .= "\n".get_string('rep_end_date', 'block_mrbs');
+            $body .= "\n".get_string('rep_end_date', 'block_tbs');
             if ($new_entry) {
                 if ($modified_enddate != null) {
                     $body .= ": ".userdate($modified_enddate, '%A %d %B %Y');
@@ -909,14 +909,14 @@ function notifyAdminOnBooking($new_entry, $new_id, $modified_enddate = null) {
         if (($recipuser) && ($result)) {
             $result = email_to_user($recipuser, $fromuser, $subject, $body);
             if (!$result) {
-                notice(get_string('email_failed', 'block_mrbs'));
+                notice(get_string('email_failed', 'block_tbs'));
             }
         } else {
             if (!$recipuser) {
                 $result = 0;
-                notice(get_string('no_user_with_email', 'block_mrbs', $recip));
+                notice(get_string('no_user_with_email', 'block_tbs', $recip));
             } else {
-                notice(get_string('no_user_with_email', 'block_mrbs', MAIL_FROM));
+                notice(get_string('no_user_with_email', 'block_tbs', MAIL_FROM));
             }
         }
     }
@@ -973,53 +973,53 @@ function notifyAdminOnDelete($mail_previous) {
     $subjdetails->room = $mail_previous['room_name'];
     $subjdetails->entry_type = $typel[$mail_previous['type']];
 
-    $subject = get_string('mail_subject_delete', 'block_mrbs', $subjdetails);
+    $subject = get_string('mail_subject_delete', 'block_tbs', $subjdetails);
     $subject = str_replace('&nbsp;', ' ', $subject);
-    $body = get_string('mail_body_del_entry', 'block_mrbs').": \n\n";
+    $body = get_string('mail_body_del_entry', 'block_tbs').": \n\n";
     // Displays deleted entry details
-    $body .= "\n".get_string('namebooker', 'block_mrbs').': ';
+    $body .= "\n".get_string('namebooker', 'block_tbs').': ';
     $body .= removeMailUnicode($mail_previous['namebooker'])."\n";
     $body .= get_string('description').": ";
     $body .= removeMailUnicode($mail_previous['description'])."\n";
-    $body .= get_string('room', 'block_mrbs').": ";
+    $body .= get_string('room', 'block_tbs').": ";
     $body .= removeMailUnicode($mail_previous['area_name']);
     $body .= " - ".removeMailUnicode($mail_previous['room_name'])."\n";
-    $body .= get_string('start_date', 'block_mrbs').': ';
+    $body .= get_string('start_date', 'block_tbs').': ';
     if ($enable_periods) {
         $body .= unHtmlEntities($mail_previous['start_date'])."\n";
     } else {
         $body .= $mail_previous['start_date']."\n";
     }
-    $body .= get_string('duration', 'block_mrbs').': '.$mail_previous['duration'].' ';
+    $body .= get_string('duration', 'block_tbs').': '.$mail_previous['duration'].' ';
     $body .= $mail_previous['dur_units']."\n";
     if ($enable_periods) {
-        $body .= get_string('end_date', 'block_mrbs').": ";
+        $body .= get_string('end_date', 'block_tbs').": ";
         $body .= unHtmlEntities($mail_previous['end_date'])."\n";
     } else {
-        $body .= get_string('end_date', 'block_mrbs').": ".$mail_previous['end_date'];
+        $body .= get_string('end_date', 'block_tbs').": ".$mail_previous['end_date'];
         $body .= "\n";
     }
-    $body .= get_string('type', 'block_mrbs').": ";
+    $body .= get_string('type', 'block_tbs').": ";
     $body .= (empty($typel[$mail_previous['type']])) ? "?".
         $mail_previous['type']."?" : $typel[$mail_previous['type']];
-    $body .= "\n".get_string('createdby', 'block_mrbs').": ";
+    $body .= "\n".get_string('createdby', 'block_tbs').": ";
     $body .= $mail_previous['createdby']."\n";
     $body .= get_string('lastmodified').": ".$mail_previous['updated'];
-    $body .= "\n".get_string('rep_type', 'block_mrbs');
+    $body .= "\n".get_string('rep_type', 'block_tbs');
     $temp = $mail_previous['rep_type'];
-    $body .= ": ".get_string('rep_type_'.$temp, 'block_mrbs');
+    $body .= ": ".get_string('rep_type_'.$temp, 'block_tbs');
     if ($mail_previous['rep_type'] > 0) {
         if ($mail_previous['rep_type'] == 6) {
-            $body .= "\n".get_string('rep_num_weeks', 'block_mrbs');
+            $body .= "\n".get_string('rep_num_weeks', 'block_tbs');
             $body .= ": ".$mail_previous["rep_num_weeks"];
         }
 
         if ($mail_previous["rep_opt"]) {
-            $body .= "\n".get_string('rep_rep_day', 'block_mrbs');
+            $body .= "\n".get_string('rep_rep_day', 'block_tbs');
             $body .= " ".$mail_previous["rep_opt"];
         }
 
-        $body .= "\n".get_string('rep_end_date', 'block_mrbs');
+        $body .= "\n".get_string('rep_end_date', 'block_tbs');
         $body .= " ".$mail_previous['rep_end_date']."\n";
     }
     $body .= "\n";
@@ -1036,14 +1036,14 @@ function notifyAdminOnDelete($mail_previous) {
         if (($recipuser) && ($result)) {
             $result = email_to_user($recipuser, $fromuser, $subject, $body);
             if (!$result) {
-                notice(get_string('error_send_email', 'block_mrbs', $recip));
+                notice(get_string('error_send_email', 'block_tbs', $recip));
             }
         } else {
             if ($recipuser < 1) {
                 $result = 0;
-                notice(get_string('no_user_with_email', 'block_mrbs', $recip));
+                notice(get_string('no_user_with_email', 'block_tbs', $recip));
             } else {
-                notice(get_string('no_user_with_email', 'block_mrbs', MAIL_FROM));
+                notice(get_string('no_user_with_email', 'block_tbs', MAIL_FROM));
             }
         }
     }
@@ -1090,8 +1090,8 @@ function getPreviousEntryData($id, $series) {
             re.end_date AS tbl_r_end_date";
     }
     $sql .= "
-    FROM {block_mrbs_entry} e, {block_mrbs_room} r, {block_mrbs_area} a ";
-    (1 == $series) ? $sql .= ', '.'{block_mrbs_repeat} re ' : '';
+    FROM {block_tbs_entry} e, {block_tbs_room} r, {block_tbs_area} a ";
+    (1 == $series) ? $sql .= ', '.'{block_tbs_repeat} re ' : '';
     $sql .= "
     WHERE e.room_id = r.id
     AND r.area_id = a.id
@@ -1287,9 +1287,9 @@ function get_user_by_email($email) {
  *
  */
 function to_hr_time($time) {
-    $cfg_mrbs = get_config('block/mrbs');
-    if ($cfg_mrbs->enable_periods) {
-        $periods = explode("\n", $cfg_mrbs->periods);
+    $cfg_tbs = get_config('block/tbs');
+    if ($cfg_tbs->enable_periods) {
+        $periods = explode("\n", $cfg_tbs->periods);
         $period = intval(date('i', $time));
         return trim($periods[$period]);
     } else {
@@ -1305,7 +1305,7 @@ function check_max_advance_days_internal(DateTime $checkdate) {
     }
 
     $syscontext = context_system::instance();
-    if (has_capability('block/mrbs:ignoremaxadvancedays', $syscontext)) {
+    if (has_capability('block/tbs:ignoremaxadvancedays', $syscontext)) {
         return true;
     }
 

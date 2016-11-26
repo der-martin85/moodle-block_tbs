@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php');
 global $PAGE, $OUTPUT;
 if ($pview != 1) {
 
-    echo "<P><HR><B>".get_string('viewday', 'block_mrbs').":</B>\n";
+    echo "<P><HR><B>".get_string('viewday', 'block_tbs').":</B>\n";
 
     if (!isset($year)) {
         $year = strftime("%Y");
@@ -53,7 +53,7 @@ if ($pview != 1) {
         if ($i == 0) {
             echo '<b>[ ';
         }
-        $url = new moodle_url('/blocks/mrbs/web/day.php', array_merge(array(
+        $url = new moodle_url('/blocks/tbs/web/day.php', array_merge(array(
                                                                           'year' => $cyear, 'month' => $cmonth, 'day' => $cday
                                                                       ), $params));
         echo "<a href=\"".$url."\">$str</a>\n";
@@ -62,7 +62,7 @@ if ($pview != 1) {
         }
     }
 
-    echo "<BR><B>".get_string('viewweek', 'block_mrbs').":</B>\n";
+    echo "<BR><B>".get_string('viewweek', 'block_tbs').":</B>\n";
 
     if (!empty($room)) {
         if (is_object($room)) {
@@ -95,7 +95,7 @@ if ($pview != 1) {
         if ($i == 0) {
             echo '<b>[ ';
         }
-        $url = new moodle_url('/blocks/mrbs/web/week.php', array_merge(array(
+        $url = new moodle_url('/blocks/tbs/web/week.php', array_merge(array(
                                                                            'year' => $cyear, 'month' => $cmonth, 'day' => $cday
                                                                        ), $params));
         echo "<a href=\"".$url."\">$str</a>\n";
@@ -104,7 +104,7 @@ if ($pview != 1) {
         }
     }
 
-    echo "<BR><B>".get_string('viewmonth', 'block_mrbs').":</B>\n";
+    echo "<BR><B>".get_string('viewmonth', 'block_tbs').":</B>\n";
     for ($i = -2; $i <= 6; $i++) {
         $ctime = mktime(0, 0, 0, $month + $i, 1, $year);
         $str = userdate($ctime, "%b %Y");
@@ -117,7 +117,7 @@ if ($pview != 1) {
         if ($i == 0) {
             echo '<b>[ ';
         }
-        $url = new moodle_url('/blocks/mrbs/web/month.php', array_merge(array('year' => $cyear, 'month' => $cmonth), $params));
+        $url = new moodle_url('/blocks/tbs/web/month.php', array_merge(array('year' => $cyear, 'month' => $cmonth), $params));
         echo "<a href=\"".$url."\">$str</a>\n";
         if ($i == 0) {
             echo ']</b> ';
@@ -126,10 +126,10 @@ if ($pview != 1) {
 
     echo "<HR>";
     $thisurl = new moodle_url($PAGE->url, array('pview' => 1));
-    echo '<p><center><a href="'.$thisurl.'">'.get_string('ppreview', 'block_mrbs').'</a></center><p>';
+    echo '<p><center><a href="'.$thisurl.'">'.get_string('ppreview', 'block_tbs').'</a></center><p>';
 
 }
 
-echo '</div>';  // Close 'mrbscontainer'
+echo '</div>';  // Close 'tbscontainer'
 
 echo $OUTPUT->footer();

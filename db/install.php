@@ -1,5 +1,5 @@
 <?php
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,40 +16,40 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-function xmldb_block_mrbs_install() {
+function xmldb_block_tbs_install() {
     global $DB;
 
     // Get system context.
     $context = context_system::instance();
 
     // Create the viewer role.
-    if (!$DB->record_exists('role', array('shortname' => 'mrbsviewer'))) {
-        $mrbsviewerid = create_role(get_string('mrbsviewer', 'block_mrbs'), 'mrbsviewer',
-                                    get_string('mrbsviewer_desc', 'block_mrbs'));
-        set_role_contextlevels($mrbsviewerid, array(CONTEXT_SYSTEM));
-        assign_capability('block/mrbs:viewmrbs', CAP_ALLOW, $mrbsviewerid, $context->id, true);
+    if (!$DB->record_exists('role', array('shortname' => 'tbsviewer'))) {
+        $tbsviewerid = create_role(get_string('tbsviewer', 'block_tbs'), 'tbsviewer',
+                                    get_string('tbsviewer_desc', 'block_tbs'));
+        set_role_contextlevels($tbsviewerid, array(CONTEXT_SYSTEM));
+        assign_capability('block/tbs:viewtbs', CAP_ALLOW, $tbsviewerid, $context->id, true);
     }
 
     // Create the editor role.
-    if (!$DB->record_exists('role', array('shortname' => 'mrbseditor'))) {
-        $mrbseditorid = create_role(get_string('mrbseditor', 'block_mrbs'), 'mrbseditor',
-                                    get_string('mrbseditor_desc', 'block_mrbs'));
-        set_role_contextlevels($mrbseditorid, array(CONTEXT_SYSTEM));
-        assign_capability('block/mrbs:viewmrbs', CAP_ALLOW, $mrbseditorid, $context->id, true);
-        assign_capability('block/mrbs:editmrbs', CAP_ALLOW, $mrbseditorid, $context->id, true);
+    if (!$DB->record_exists('role', array('shortname' => 'tbseditor'))) {
+        $tbseditorid = create_role(get_string('tbseditor', 'block_tbs'), 'tbseditor',
+                                    get_string('tbseditor_desc', 'block_tbs'));
+        set_role_contextlevels($tbseditorid, array(CONTEXT_SYSTEM));
+        assign_capability('block/tbs:viewtbs', CAP_ALLOW, $tbseditorid, $context->id, true);
+        assign_capability('block/tbs:edittbs', CAP_ALLOW, $tbseditorid, $context->id, true);
     }
 
     // Create the admin role.
-    if (!$DB->record_exists('role', array('shortname' => 'mrbsadmin'))) {
-        $mrbsadminid = create_role(get_string('mrbsadmin', 'block_mrbs'), 'mrbsadmin',
-                                   get_string('mrbsadmin_desc', 'block_mrbs'));
-        set_role_contextlevels($mrbsadminid, array(CONTEXT_SYSTEM));
-        assign_capability('block/mrbs:viewmrbs', CAP_ALLOW, $mrbsadminid, $context->id, true);
-        assign_capability('block/mrbs:editmrbs', CAP_ALLOW, $mrbsadminid, $context->id, true);
-        assign_capability('block/mrbs:administermrbs', CAP_ALLOW, $mrbsadminid, $context->id, true);
-        assign_capability('block/mrbs:viewalltt', CAP_ALLOW, $mrbsadminid, $context->id, true);
-        assign_capability('block/mrbs:forcebook', CAP_ALLOW, $mrbsadminid, $context->id, true);
-        assign_capability('block/mrbs:doublebook', CAP_ALLOW, $mrbsadminid, $context->id, true);
+    if (!$DB->record_exists('role', array('shortname' => 'tbsadmin'))) {
+        $tbsadminid = create_role(get_string('tbsadmin', 'block_tbs'), 'tbsadmin',
+                                   get_string('tbsadmin_desc', 'block_tbs'));
+        set_role_contextlevels($tbsadminid, array(CONTEXT_SYSTEM));
+        assign_capability('block/tbs:viewtbs', CAP_ALLOW, $tbsadminid, $context->id, true);
+        assign_capability('block/tbs:edittbs', CAP_ALLOW, $tbsadminid, $context->id, true);
+        assign_capability('block/tbs:administertbs', CAP_ALLOW, $tbsadminid, $context->id, true);
+        assign_capability('block/tbs:viewalltt', CAP_ALLOW, $tbsadminid, $context->id, true);
+        assign_capability('block/tbs:forcebook', CAP_ALLOW, $tbsadminid, $context->id, true);
+        assign_capability('block/tbs:doublebook', CAP_ALLOW, $tbsadminid, $context->id, true);
     }
 
     // Clear any capability caches

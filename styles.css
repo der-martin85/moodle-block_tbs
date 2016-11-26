@@ -6,80 +6,80 @@
         Purpose of the stylesheet follows.
 */
 
-#mrbscontainer {color:black; font-size: 10pt; font-family:arial,sans-serif; overflow: auto; padding: 1px;}
+#tbscontainer {color:black; font-size: 10pt; font-family:arial,sans-serif; overflow: auto; padding: 1px;}
 
-#mrbscontainer A:link {color:#5B69A6; font-weight: bold; text-decoration: none}
-#mrbscontainer A:visited {color:#5B69A6; font-weight: bold; text-decoration: none}
-#mrbscontainer A:hover {color:red; text-decoration:underline}
-#mrbscontainer H1 {color:black; font-family:verdana,sans-serif; font-size:16pt}
-#mrbscontainer H2 {color:black; font-family:verdana,sans-serif; font-size:14pt}
-#mrbscontainer H3 {font-family:verdana,sans-serif; font-size:12pt}
+#tbscontainer A:link {color:#5B69A6; font-weight: bold; text-decoration: none}
+#tbscontainer A:visited {color:#5B69A6; font-weight: bold; text-decoration: none}
+#tbscontainer A:hover {color:red; text-decoration:underline}
+#tbscontainer H1 {color:black; font-family:verdana,sans-serif; font-size:16pt}
+#tbscontainer H2 {color:black; font-family:verdana,sans-serif; font-size:14pt}
+#tbscontainer H3 {font-family:verdana,sans-serif; font-size:12pt}
 
-#mrbscontainer table {margin-bottom: 0; }
+#tbscontainer table {margin-bottom: 0; }
 
-#mrbscontainer TD {font-size:10pt; font-family:arial,sans-serif;
+#tbscontainer TD {font-size:10pt; font-family:arial,sans-serif;
 vertical-align:top; padding: 1px;}
-#mrbscontainer TD.border {border-width: 1px; padding: 3px;}
-#mrbscontainer TD.header {color:black; font-family:verdana,sans-serif; border-width:0;
+#tbscontainer TD.border {border-width: 1px; padding: 3px;}
+#tbscontainer TD.header {color:black; font-family:verdana,sans-serif; border-width:0;
 background-color:#ffffdd; font-size:26pt}
 
-#mrbscontainer TD.CR { vertical-align: middle; text-align: right}
-#mrbscontainer TD.CL { vertical-align: middle; text-align: left}
-#mrbscontainer TD.BR { vertical-align: baseline; text-align: right}
-#mrbscontainer TD.BL { vertical-align: baseline; text-align: left}
-#mrbscontainer TD.TR { vertical-align: top; text-align: right}
-#mrbscontainer TD.TL { vertical-align: top; text-align: left}
+#tbscontainer TD.CR { vertical-align: middle; text-align: right}
+#tbscontainer TD.CL { vertical-align: middle; text-align: left}
+#tbscontainer TD.BR { vertical-align: baseline; text-align: right}
+#tbscontainer TD.BL { vertical-align: baseline; text-align: left}
+#tbscontainer TD.TR { vertical-align: top; text-align: right}
+#tbscontainer TD.TL { vertical-align: top; text-align: left}
 
-#mrbscontainer td form { margin:0; } /* Prevent IE from displaying margins around forms in tables. */
+#tbscontainer td form { margin:0; } /* Prevent IE from displaying margins around forms in tables. */
 
-#mrbscontainer TD.unallocated {color:gray}
-#mrbscontainer TD.allocated {color:black}
-#mrbscontainer A:link.unallocated {color:#9BA9E6}
-#mrbscontainer A:link.allocated {color:#5B69A6}
+#tbscontainer TD.unallocated {color:gray}
+#tbscontainer TD.allocated {color:black}
+#tbscontainer A:link.unallocated {color:#9BA9E6}
+#tbscontainer A:link.allocated {color:#5B69A6}
 
-#mrbscontainer A:hover.unallocated {color:red}
-#mrbscontainer A:hover.allocated {color:red}
+#tbscontainer A:hover.unallocated {color:red}
+#tbscontainer A:hover.allocated {color:red}
 
-#mrbscontainer A.blue {color:blue}
-#mrbscontainer A:visited.blue {color:blue}
-#mrbscontainer A:hover.blue {color:red}
+#tbscontainer A.blue {color:blue}
+#tbscontainer A:visited.blue {color:blue}
+#tbscontainer A:hover.blue {color:red}
 
-#mrbscontainer TH {color:#eeeeee; font-size:10pt; font-family:verdana,sans-serif;
+#tbscontainer TH {color:#eeeeee; font-size:10pt; font-family:verdana,sans-serif;
 background-color:#999999;
 border-width:1; border-color:#999999; vertical-align:top; padding: 1px;}
-#mrbscontainer TD.banner {vertical-align:middle; background-color:#C0E0FF}
-#mrbscontainer TABLE.banner { margin-bottom: 1em; }
+#tbscontainer TD.banner {vertical-align:middle; background-color:#C0E0FF}
+#tbscontainer TABLE.banner { margin-bottom: 1em; }
 
-#mrbscontainer TD.blue {background-color:#F0F0FF}
-#mrbscontainer TD.red  {background-color:#FFF0F0}
-#mrbscontainer TD.green {background-color:#DDFFDD}
-#mrbscontainer TD.A {background-color:#FFCCFF}
-#mrbscontainer TD.B {background-color:#99CCCC}
-#mrbscontainer TD.C {background-color:#FF9999}
-#mrbscontainer TD.D {background-color:#FFFF99}
-#mrbscontainer TD.E {background-color:#C0E0FF}
-#mrbscontainer TD.F {background-color:#FFCC99}
-#mrbscontainer TD.G {background-color:#FF6666}
-#mrbscontainer TD.H {background-color:#66FFFF}
-#mrbscontainer TD.I {background-color:#DDFFDD}
-#mrbscontainer TD.J {background-color:#CCCCCC}
-#mrbscontainer TD.K {background-color:#CEA8F4}
-#mrbscontainer TD.L {background-color:#93EEAA}
-#mrbscontainer TD.U {background-color:#FF0000}
-#mrbscontainer TD.white {background-color:#FFFFFF}
-#mrbscontainer TD.DoubleBooked {background-color:#FF0000}
+#tbscontainer TD.blue {background-color:#F0F0FF}
+#tbscontainer TD.red  {background-color:#FFF0F0}
+#tbscontainer TD.green {background-color:#DDFFDD}
+#tbscontainer TD.A {background-color:#FFCCFF}
+#tbscontainer TD.B {background-color:#99CCCC}
+#tbscontainer TD.C {background-color:#FF9999}
+#tbscontainer TD.D {background-color:#FFFF99}
+#tbscontainer TD.E {background-color:#C0E0FF}
+#tbscontainer TD.F {background-color:#FFCC99}
+#tbscontainer TD.G {background-color:#FF6666}
+#tbscontainer TD.H {background-color:#66FFFF}
+#tbscontainer TD.I {background-color:#DDFFDD}
+#tbscontainer TD.J {background-color:#CCCCCC}
+#tbscontainer TD.K {background-color:#CEA8F4}
+#tbscontainer TD.L {background-color:#93EEAA}
+#tbscontainer TD.U {background-color:#FF0000}
+#tbscontainer TD.white {background-color:#FFFFFF}
+#tbscontainer TD.DoubleBooked {background-color:#FF0000}
 
-#mrbscontainer TD.calendar { border:0px; font-size: 8pt}
-#mrbscontainer TD.calendarHeader {border:0px; font-size: 10pt}
-#mrbscontainer FONT.calendarHighlight {color: red}
+#tbscontainer TD.calendar { border:0px; font-size: 8pt}
+#tbscontainer TD.calendarHeader {border:0px; font-size: 10pt}
+#tbscontainer FONT.calendarHighlight {color: red}
 
-#mrbscontainer TD.even_row {background-color:#FFFFFF}	/* Even rows in the day view */
-#mrbscontainer TD.odd_row {background-color:#EEEEEE}	/* Odd rows in the day view */
+#tbscontainer TD.even_row {background-color:#FFFFFF}	/* Even rows in the day view */
+#tbscontainer TD.odd_row {background-color:#EEEEEE}	/* Odd rows in the day view */
 
-#mrbscontainer TD.highlight {background-color:#AABBFF; border-style:solid; border-width:1; border-color:#0000AA;} /* The highlighted cell under the cursor */
-#mrbscontainer .naked { margin: 0; padding: 0; border-width:0} /* Invisible tables used for internal needs */
+#tbscontainer TD.highlight {background-color:#AABBFF; border-style:solid; border-width:1; border-color:#0000AA;} /* The highlighted cell under the cursor */
+#tbscontainer .naked { margin: 0; padding: 0; border-width:0} /* Invisible tables used for internal needs */
 
-#mrbscontainer .sitename
+#tbscontainer .sitename
 {font-size: 18px;
 font-style: normal;
 font-weight: bold;
@@ -89,5 +89,5 @@ position: absolute;
 left:30;
 top:12}
 
-#mrbscontainer TD.month {font-size: 8pt; background-color:#FFFFFF}
-#mrbscontainer .monthday {font-size: 12pt; vertical-align: top; text-align: left}
+#tbscontainer TD.month {font-size: 8pt; background-color:#FFFFFF}
+#tbscontainer .monthday {font-size: 12pt; vertical-align: top; text-align: left}

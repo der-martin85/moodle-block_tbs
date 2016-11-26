@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,11 +17,11 @@
 
 /*
  *
- * Assigns MRBS access levels based on the user status
+ * Assigns TBS access levels based on the user status
  * within your Moodle installation.
  *
  *
- * MRBS Levels
+ * TBS Levels
  * 0 - View only
  * 1 - View and make bookings
  * 2 - Full administration - add rooms and bookings
@@ -50,18 +50,18 @@ function authGetUserLevel($user) {
     // HACK For Moodle 1.7 With Roles Block...
     $context = context_system::instance();
 
-    // Set Access leve for users via MRBS block and Moodle 1.7 roles
-    if (has_capability('block/mrbs:administermrbs', $context)) {
+    // Set Access leve for users via TBS block and Moodle 1.7 roles
+    if (has_capability('block/tbs:administertbs', $context)) {
         return 2;
     }
-    // has_capability('block/mrbs:editmrbs', $context)
-    if (has_capability('block/mrbs:editmrbs', $context)) {
+    // has_capability('block/tbs:edittbs', $context)
+    if (has_capability('block/tbs:edittbs', $context)) {
         return 1;
     }
-    if (has_capability('block/mrbs:editmrbsunconfirmed', $context, null, false)) {
+    if (has_capability('block/tbs:edittbsunconfirmed', $context, null, false)) {
         return 1; // Can book rooms, but only as 'unconfirmed' (unless they are the room admin)
     }
-    if (has_capability('block/mrbs:viewmrbs', $context)) {
+    if (has_capability('block/tbs:viewtbs', $context)) {
         return 0;
     } else { // Set access level for other users (e.g. people who access url directly)
         return 0;

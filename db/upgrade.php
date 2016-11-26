@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the MRBS block for Moodle
+// This file is part of the TBS block for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ function renameifexists(database_manager $dbman, $tablename) {
     $DB->execute('ALTER TABLE '.$oldname.' RENAME TO '.$newname);
 }
 
-function block_mrbs_convert_timestamp($tablename, $fieldname) {
+function block_tbs_convert_timestamp($tablename, $fieldname) {
     global $DB;
 
     // Check to see if the field is currently of type 'timestamp'.
@@ -88,23 +88,23 @@ function block_mrbs_convert_timestamp($tablename, $fieldname) {
     echo "$tablename.$fieldname converted from timestamp to integer (backup data in $tablename.$backupfield)<br/>\n";
 }
 
-function xmldb_block_mrbs_upgrade($oldversion=0) {
+function xmldb_block_tbs_upgrade($oldversion=0) {
     global $DB, $CFG;
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2011050600) {
+    if ($oldversion < 2016112600) {
         // Cannot use the built-in Moodle database manipulation commands, as they all assume the prefix
-        renameifexists($dbman, 'mrbs_area');
-        renameifexists($dbman, 'mrbs_entry');
-        renameifexists($dbman, 'mrbs_repeat');
-        renameifexists($dbman, 'mrbs_room');
+        renameifexists($dbman, 'tbs_area');
+        renameifexists($dbman, 'tbs_entry');
+        renameifexists($dbman, 'tbs_repeat');
+        renameifexists($dbman, 'tbs_room');
 
-        upgrade_block_savepoint(true, 2011050600, 'mrbs');
+        upgrade_block_savepoint(true, 2016112600, 'tbs');
     }
 
     if ($oldversion < 2011111200) {
-        $table = new xmldb_table('mrbs_room');
+        $table = new xmldb_table('tbs_room');
         $field = new xmldb_field('booking_users', XMLDB_TYPE_TEXT, 'medium', null, null, null, null, 'room_admin_email');
 
         // Conditionally launch add field booking_users
@@ -112,32 +112,32 @@ function xmldb_block_mrbs_upgrade($oldversion=0) {
             $dbman->add_field($table, $field);
         }
 
-        // mrbs savepoint reached
-        upgrade_block_savepoint(true, 2011111200, 'mrbs');
+        // tbs savepoint reached
+        upgrade_block_savepoint(true, 2011111200, 'tbs');
     }
 
     // Rename the tables to match the naming scheme required by Moodle.org
     if ($oldversion < 2012021300) {
-        $table = new xmldb_table('mrbs_area');
-        $dbman->rename_table($table, 'block_mrbs_area');
+        $table = new xmldb_table('tbs_area');
+        $dbman->rename_table($table, 'block_tbs_area');
 
-        $table = new xmldb_table('mrbs_entry');
-        $dbman->rename_table($table, 'block_mrbs_entry');
+        $table = new xmldb_table('tbs_entry');
+        $dbman->rename_table($table, 'block_tbs_entry');
 
-        $table = new xmldb_table('mrbs_repeat');
-        $dbman->rename_table($table, 'block_mrbs_repeat');
+        $table = new xmldb_table('tbs_repeat');
+        $dbman->rename_table($table, 'block_tbs_repeat');
 
-        $table = new xmldb_table('mrbs_room');
-        $dbman->rename_table($table, 'block_mrbs_room');
+        $table = new xmldb_table('tbs_room');
+        $dbman->rename_table($table, 'block_tbs_room');
 
-        // mrbs savepoint reached
-        upgrade_block_savepoint(true, 2012021300, 'mrbs');
+        // tbs savepoint reached
+        upgrade_block_savepoint(true, 2012021300, 'tbs');
     }
 
     if ($oldversion < 2012022700) {
 
-        // Define field roomchange to be added to mrbs_entry
-        $table = new xmldb_table('block_mrbs_entry');
+        // Define field roomchange to be added to tbs_entry
+        $table = new xmldb_table('block_tbs_entry');
         $field = new xmldb_field('roomchange', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'description');
 
         // Conditionally launch add field roomchange
@@ -145,26 +145,26 @@ function xmldb_block_mrbs_upgrade($oldversion=0) {
             $dbman->add_field($table, $field);
         }
 
-        // mrbs savepoint reached
-        upgrade_block_savepoint(true, 2012022700, 'mrbs');
+        // tbs savepoint reached
+        upgrade_block_savepoint(true, 2012022700, 'tbs');
     }
 
     // Fix any 'timestamp' fields left from a Moodle 1.9 upgrade.
     if ($oldversion < 2012091200) {
         if ($DB->get_dbfamily() == 'mysql') {
-            echo "Converting timestamp fields (from early Moodle 1.9 versions of MRBS)<br/>\n";
+            echo "Converting timestamp fields (from early Moodle 1.9 versions of TBS)<br/>\n";
 
-            block_mrbs_convert_timestamp('block_mrbs_entry', 'start_time');
-            block_mrbs_convert_timestamp('block_mrbs_entry', 'end_time');
-            block_mrbs_convert_timestamp('block_mrbs_entry', 'timestamp');
+            block_tbs_convert_timestamp('block_tbs_entry', 'start_time');
+            block_tbs_convert_timestamp('block_tbs_entry', 'end_time');
+            block_tbs_convert_timestamp('block_tbs_entry', 'timestamp');
 
-            block_mrbs_convert_timestamp('block_mrbs_repeat', 'start_time');
-            block_mrbs_convert_timestamp('block_mrbs_repeat', 'end_time');
-            block_mrbs_convert_timestamp('block_mrbs_repeat', 'end_date');
-            block_mrbs_convert_timestamp('block_mrbs_repeat', 'timestamp');
+            block_tbs_convert_timestamp('block_tbs_repeat', 'start_time');
+            block_tbs_convert_timestamp('block_tbs_repeat', 'end_time');
+            block_tbs_convert_timestamp('block_tbs_repeat', 'end_date');
+            block_tbs_convert_timestamp('block_tbs_repeat', 'timestamp');
 
-            // mrbs savepoint reached
-            upgrade_block_savepoint(true, 2012091200, 'mrbs');
+            // tbs savepoint reached
+            upgrade_block_savepoint(true, 2012091200, 'tbs');
         }
     }
 
