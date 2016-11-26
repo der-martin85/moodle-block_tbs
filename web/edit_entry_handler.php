@@ -270,19 +270,83 @@ if ($id > 0) {
 $err = "";
 $errtype = 0;
 $forcemoveoutput = '';
+// Calculate all_day start-/endtime for clash detection
+function get_allday_starttime($enable_periods = false, $month = null, $day = null, $year = null){
+    if ($enable_periods) {
+	return mktime(12, 0, 0, $month, $day, $year);
+    } else {
+	return mktime($morningstarts, 0, 0, $month, $day, $year);
+    }
+}
+
+function get_allday_endtime($enable_periods = false, $month = null, $day = null, $year = null){
+    if ($enable_periods) {
+	return mktime(12, $max_periods, 0, $month, $day, $year);
+    } else {
+	$end_minutes = $eveningends_minutes + $morningstarts_minutes;
+	($eveningends_minutes > 59) ? $end_minutes += 60 : '';
+	return mktime($eveningends, $end_minutes, 0, $month, $day, $year);
+    }
+}
+
+$ad_starttime = get_allday_starttime($enable_periods, $month, $day, $year);
+$ad_endtime = get_allday_endtime($enable_periods, $month, $day, $year);
+
+// Calculate all_week start-/endtime for clash detection (capacity checking)
+function get_allweek_starttime($enable_periods = false, $month = null, $day = null, $year = null){
+    if ($enable_periods) {
+	$time =  mktime(12, 0, 0, $month, $day, $year);
+	if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0) {
+	    $time -= $weekday * 86400;
+	}
+	return $time;
+    } else {
+	$time = mktime($morningstarts, 0, 0, $month, $day, $year);
+	if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0) {
+	    $time -= $weekday * 86400;
+	}
+	return $time;
+    }
+}
+
+function get_allweek_endtime($enable_periods = false, $month = null, $day = null, $year = null){
+    if ($enable_periods) {
+	return mktime(12, $max_periods, 0, $month, $day + 6, $year);
+    } else {
+	$end_minutes = $eveningends_minutes + $morningstarts_minutes;
+	($eveningends_minutes > 59) ? $end_minutes += 60 : '';
+	return mktime($eveningends, $end_minutes, 0, $month, $day + 6, $year);
+    }
+}
+$aw_starttime = get_allweek_starttime($enable_periods, $month, $day, $year);
+$aw_endtime = get_allweek_endtime($enable_periods, date("m",$aw_starttime), date("d", $aw_starttime), date("y", $aw_starttime));
+
 foreach ($rooms as $room_id) {
     if ($rep_type != 0 && !empty($reps)) {
         if (count($reps) < $max_rep_entrys) {
             for ($i = 0; $i < count($reps); $i++) {
+		// first check for day clashes
                 // calculate diff each time and correct where events
                 // cross DST
-                $diff = $endtime - $starttime;
+                $diff = $ad_endtime - $ad_starttime;
                 $diff += cross_dst($reps[$i], $reps[$i] + $diff);
                 $tmp = tbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
                 if (!empty($tmp)) {
                     $err = $err.$tmp;
                     $errtype = TBS_ERR_DOUBLEBOOK;
-                }
+                } else {
+		    // no day clashes - check for week clashes
+            	    // calculate diff each time and correct where events
+            	    // cross DST
+            	    $diff = $aw_endtime - $aw_starttime;
+		    $aw_reps_i = get_allweek_starttime($enable_periods, date("m",$reps[$i]), date("d",$reps[$i]), date("y",$reps[$i]));
+            	    $diff += cross_dst($aw_reps_i, $aw_reps_i + $diff);
+            	    $tmp = tbsCheckCapacity($room_id, $aw_reps_i, $aw_reps_i + $diff, $ignore_id, $repeat_id);
+		    if (!empty($tmp)) {
+			$err = $err.$tmp;
+			$errtype = TBS_TOO_MANY;
+		    }
+		}
             }
         } else {
             $err .= get_string('too_may_entrys', 'block_tbs')."<P>";
@@ -292,7 +356,7 @@ foreach ($rooms as $room_id) {
     } else {
         if (has_capability("block/tbs:forcebook", $context) and $forcebook) {
             require_once "force_book.php";
-            $forcemoveoutput .= tbsForceMove($room_id, $starttime, $endtime, $name, $id);
+            $forcemoveoutput .= tbsForceMove($room_id, $ad_starttime, $ad_endtime, $name, $id);
             //do this so that it thinks no clashes were found
             $tmp = '';
         } else if ($doublebook and has_capability('block/tbs:doublebook', $context)) {
@@ -309,7 +373,7 @@ foreach ($rooms as $room_id) {
              OR (entry.start_time < ? AND entry.end_time>= ?))';
 
             $clashingbookings = $DB->get_records_sql($sql, array(
-                $room_id, $starttime, $endtime, $starttime, $starttime, $endtime, $endtime
+                $room_id, $ad_starttime, $ad_endtime, $ad_starttime, $ad_starttime, $ad_endtime, $ad_endtime
             ));
             foreach ($clashingbookings as $clashingbooking) {
                 $oldbookinguser = $DB->get_record('user', array('username' => $clashingbooking->create_by));
@@ -328,7 +392,12 @@ foreach ($rooms as $room_id) {
             }
         } else {
             // If the user hasn't confirmed they want to double book, check the room is free.
-            $err .= tbsCheckFree($room_id, $starttime, $endtime - 1, $ignore_id, 0);
+	    $capacity_err .= tbsCheckCapacity($room_id, $aw_starttime, $aw_endtime - 1, $ignore_id, 0);
+	    if( !empty($capacity_err) ){
+		$err .= $capacity_err;
+	    } else {
+        	$err .= tbsCheckFree($room_id, $ad_starttime, $ad_endtime - 1, $ignore_id, 0);
+	    }
         }
     }
 

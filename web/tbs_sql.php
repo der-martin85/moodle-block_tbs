@@ -87,6 +87,78 @@ function tbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore) {
     return $err;
 }
 
+/** tbsCheckCapacity()
+ *
+ * Check to see if the time period specified has free capacity
+ *
+ * $room_id   - Which room are we checking
+ * $starttime - The start of period
+ * $endtime   - The end of the period
+ * $ignore    - An entry ID to ignore, 0 to ignore no entries
+ * $repignore - A repeat ID to ignore everything in the series, 0 to ignore no series
+ *
+ * Returns:
+ *   nothing   - The area is free
+ *   something - An error occured, the return value is human readable
+ */
+function tbsCheckCapacity($room_id, $starttime, $endtime, $ignore, $repignore) {
+    global $DB;
+    global $enable_periods;
+    global $periods;
+
+    // Select any meetings which overlap ($starttime,$endtime) for this room:
+    $sql = "start_time < ? AND end_time > ? AND room_id = ? ";
+
+    $params = array($endtime, $starttime, $room_id);
+
+    if ($ignore > 0) {
+        $sql .= " AND id <> ?";
+        $params[] = $ignore;
+    }
+    if ($repignore > 0) {
+        $sql .= " AND repeat_id <> ?";
+        $params[] = $repignore;
+    }
+
+    $capacity = intval(tbsGetRoomCapacity($room_id));
+
+    $entries = $DB->get_records_select('block_tbs_entry', $sql, $params, 'start_time');
+
+    if (empty($entries) or count($entries) < $capacity) {
+        return "";
+    }
+    // Get the room's area ID for linking to day, week, and month views:
+    $area = tbsGetRoomArea($room_id);
+
+    // Build a string listing all the conflicts:
+    $err = "";
+    foreach ($entries as $entry) {
+        $starts = getdate($entry->start_time);
+        $param_ym = array('area' => $area, 'year' => $starts['year'], 'month' => $starts['mon']);
+        $param_ymd = array_merge($param_ym, array('day' => $starts['mday']));
+
+        if ($enable_periods) {
+            $p_num = $starts['minutes'];
+            $startstr = userdate($entry->start_time, '%A %d %B %Y, ').$periods[$p_num];
+        } else {
+            $startstr = userdate($entry->start_time, '%A %d %B %Y %H:%M:%S');
+        }
+
+        $viewurl = new moodle_url('/blocks/tbs/web/view_entry.php', array('id' => $entry->id));
+        $dayurl = new moodle_url('/blocks/tbs/web/day.php', $param_ymd);
+        $weekurl = new moodle_url('/blocks/tbs/web/week.php', array_merge($param_ymd, array('room' => $room_id)));
+        $monthurl = new moodle_url('/blocks/tbs/web/month.php', array_merge($param_ym, array('room' => $room_id)));
+
+        $err .= "<LI><A HREF=\"".$viewurl."\">$entry->name</A>"
+            ." ( ".$startstr.") "
+            ."(<A HREF=\"".$dayurl."\">".get_string('viewday', 'block_tbs')."</a>"
+            ." | <A HREF=\"".$weekurl."\">".get_string('viewweek', 'block_tbs')."</a>"
+            ." | <A HREF=\"".$monthurl."\">".get_string('viewmonth', 'block_tbs')."</a>)";
+    }
+
+    return $err;
+}
+
 /** tbsDelEntry()
  *
  * Delete an entry, or optionally all entrys.
@@ -508,4 +580,10 @@ function tbsGetRoomArea($id) {
     global $DB;
 
     return $DB->get_field('block_tbs_room', 'area_id', array('id' => $id));
+}
+
+function tbsGetRoomCapacity($id) {
+    global $DB;
+
+    return $DB->get_field('block_tbs_room', 'capacity', array('id' => $id));
 }
