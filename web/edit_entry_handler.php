@@ -335,16 +335,18 @@ foreach ($rooms as $room_id) {
                     $err = $err.$tmp;
                     $errtype = TBS_ERR_DOUBLEBOOK;
                 } else {
-		    // no day clashes - check for week clashes
+		    // no day clashes - check for week clashes (only for type E or I)
             	    // calculate diff each time and correct where events
             	    // cross DST
             	    $diff = $aw_endtime - $aw_starttime;
 		    $aw_reps_i = get_allweek_starttime($enable_periods, date("m",$reps[$i]), date("d",$reps[$i]), date("y",$reps[$i]));
             	    $diff += cross_dst($aw_reps_i, $aw_reps_i + $diff);
-            	    $tmp = tbsCheckCapacity($room_id, $aw_reps_i, $aw_reps_i + $diff, $ignore_id, $repeat_id);
-		    if (!empty($tmp)) {
-			$err = $err.$tmp;
-			$errtype = TBS_TOO_MANY;
+		    if( empty($type) or $type == 'E' or $type == 'I' ){
+            		$tmp = tbsCheckCapacity($room_id, $aw_reps_i, $aw_reps_i + $diff, $ignore_id, $repeat_id);
+			if (!empty($tmp)) {
+			    $err = $err.$tmp;
+			    $errtype = TBS_TOO_MANY;
+			}
 		    }
 		}
             }
@@ -391,8 +393,10 @@ foreach ($rooms as $room_id) {
                 }
             }
         } else {
-            // If the user hasn't confirmed they want to double book, check the room is free.
-	    $capacity_err .= tbsCheckCapacity($room_id, $aw_starttime, $aw_endtime - 1, $ignore_id, 0);
+            // If the user hasn't confirmed they want to double book, check the room is free and capacity (only type E or I).
+	    if( !empty($type) and ( $type == 'E' or $type == 'I' ) ){
+		$capacity_err .= tbsCheckCapacity($room_id, $aw_starttime, $aw_endtime - 1, $ignore_id, 0);
+	    }
 	    if( !empty($capacity_err) ){
 		$err .= $capacity_err;
 	    } else {

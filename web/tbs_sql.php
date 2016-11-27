@@ -107,7 +107,7 @@ function tbsCheckCapacity($room_id, $starttime, $endtime, $ignore, $repignore) {
     global $periods;
 
     // Select any meetings which overlap ($starttime,$endtime) for this room:
-    $sql = "start_time < ? AND end_time > ? AND room_id = ? ";
+    $sql = "start_time < ? AND end_time > ? AND room_id = ? AND ( type = 'I' OR type = 'E' ) ";
 
     $params = array($endtime, $starttime, $room_id);
 
@@ -127,6 +127,7 @@ function tbsCheckCapacity($room_id, $starttime, $endtime, $ignore, $repignore) {
     if (empty($entries) or count($entries) < $capacity) {
         return "";
     }
+
     // Get the room's area ID for linking to day, week, and month views:
     $area = tbsGetRoomArea($room_id);
 

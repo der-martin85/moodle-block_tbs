@@ -458,7 +458,6 @@ print_header_tbs($day, $month, $year, $area);
                     print "this.document.writeln(\"            <option $selected value=\\\"".$dbarea->id."\\\">".$dbarea->area_name."\")\n";
                 }
 
-                print "this.document.writeln(\"            <option  value=\\\"IT\\\">".get_string('computerrooms', 'block_tbs')."\")\n";
                 ?>
                 this.document.writeln("          </select>");
                 this.document.writeln("</td></tr>");
@@ -551,103 +550,6 @@ print_header_tbs($day, $month, $year, $area);
 
             </td>
         </tr>
-        <?php if ($edit_type == "series") { ?>
-
-            <TR>
-                <TD CLASS=CR><B><?php echo get_string('rep_type', 'block_tbs') ?></B></TD>
-                <TD CLASS=CL>
-                    <?php
-
-                    for ($i = 0; $i < 7; $i++) //manually setting this to 7 since that is how many repetition types there are -arb quick and dirty hack
-                    {
-                        echo "<INPUT ID=\"radiorepeat".$i."\" NAME=\"rep_type\" TYPE=\"RADIO\" VALUE=\"".$i."\"";
-
-                        if ($i == $rep_type) {
-                            echo " CHECKED";
-                        }
-
-                        echo '><label for="radiorepeat'.$i.'">'.get_string('rep_type_'.$i, 'block_tbs')."</label>\n";
-                    }
-
-                    ?>
-                </TD>
-            </TR>
-
-            <TR>
-                <TD CLASS=CR><B><?php echo get_string('rep_end_date', 'block_tbs') ?></B></TD>
-                <TD CLASS=CL><?php genDateSelector("rep_end_", $rep_end_day, $rep_end_month, $rep_end_year) ?></TD>
-            </TR>
-
-            <TR>
-                <TD CLASS=CR>
-                    <B><?php echo get_string('rep_rep_day', 'block_tbs') ?></B> <?php echo get_string('rep_for_weekly', 'block_tbs') ?>
-                </TD>
-                <TD CLASS=CL>
-                    <?php
-                    // Display day name checkboxes according to language and preferred weekday start.
-                    for ($i = 0; $i < 7; $i++) {
-                        $wday = ($i + $weekstarts) % 7;
-                        echo "<INPUT ID=\"chkrepeatday".$i."\" NAME=\"rep_day[$wday]\" TYPE=CHECKBOX";
-                        if ($rep_day[$wday]) {
-                            echo " CHECKED";
-                        }
-                        echo '><label for="chkrepeatday'.$i.'">'.day_name($wday)."</label>\n";
-                    }
-                    ?>
-                </TD>
-            </TR>
-
-            <?php
-        } else {
-            $key = "rep_type_".(isset($rep_type) ? $rep_type : "0");
-
-            echo "<tr><td class=\"CR\"><b>".get_string('rep_type', 'block_tbs')."</b></td><td class=\"CL\">".get_string($key, 'block_tbs')."</td></tr>\n";
-
-            if (isset($rep_type) && ($rep_type != 0)) {
-                $opt = "";
-                if ($rep_type == 2) {
-                    // Display day names according to language and preferred weekday start.
-                    for ($i = 0; $i < 7; $i++) {
-                        $wday = ($i + $weekstarts) % 7;
-                        if ($rep_opt[$wday]) {
-                            $opt .= day_name($wday)." ";
-                        }
-                    }
-                }
-                if ($opt) {
-                    echo "<tr><td class=\"CR\"><b>".get_string('rep_rep_day', 'block_tbs')."</b></td><td class=\"CL\">$opt</td></tr>\n";
-                }
-
-                echo "<tr><td class=\"CR\"><b>".get_string('rep_end_date', 'block_tbs')."</b></td><td class=\"CL\">$rep_end_date</td></tr>\n";
-            }
-        }
-        /* We display the rep_num_weeks box only if:
-           - this is a new entry ($id is not set)
-           Xor
-           - we are editing an existing repeating entry ($rep_type is set and
-             $rep_type != 0 and $edit_type == "series" )
-        */
-        if ((($id == 0)) Xor (isset($rep_type) && ($rep_type != 0) && ("series" == $edit_type))) {
-            ?>
-
-            <TR>
-                <TD CLASS=CR>
-                    <B><?php echo get_string('rep_num_weeks', 'block_tbs') ?></B> <?php echo get_string('rep_for_nweekly', 'block_tbs') ?>
-                </TD>
-                <TD CLASS=CL><INPUT TYPE=TEXT NAME="rep_num_weeks" VALUE="<?php echo $rep_num_weeks ?>">
-            </TR>
-        <?php } ?>
-
-        <?php if ($id != 0) { ?>
-            <tr>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td class="CR"><label for="tbsroomchange"><b><?php print_string('roomchange', 'block_tbs'); ?></b></td>
-                <td><input type="checkbox" checked="checked" name="roomchange" id="tbsroomchange"/></td>
-            </tr>
-        <?php } ?>
-
         <TR>
             <TD colspan=2 align=center>
                 <SCRIPT LANGUAGE="JavaScript">
