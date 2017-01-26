@@ -508,7 +508,13 @@ print_header_tbs($day, $month, $year, $area);
 
         <TR>
             <TD CLASS=CR><B><?php echo get_string('type', 'block_tbs') ?></B></TD>
-            <TD CLASS=CL><SELECT NAME="type">
+            <TD CLASS=CL><SELECT NAME="type" 
+		    <?php
+		    if (authGetUserLevel(getUserName()) < 2 
+				&& $USER->email != $rooms[$room_id]->room_admin_email) {
+			echo "disabled";
+		    }
+		    ?> >
                     <?php
                     //If this is an imported booking, forcably mark it as edited so that changes are not overridden on next import
                     if (($type == 'K') or ($type == 'L')) {
