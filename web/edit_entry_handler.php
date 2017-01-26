@@ -44,7 +44,7 @@ $rep_opt = optional_param('rep_opt', '', PARAM_SEQUENCE);
 $rep_enddate = optional_param('rep_enddate', 0, PARAM_INT);
 $forcebook = optional_param('forcebook', false, PARAM_BOOL);
 $edit_type = optional_param('edit_type', '', PARAM_TEXT);
-$type = optional_param('type', '', PARAM_TEXT);
+$type = optional_param('type', 'I', PARAM_TEXT);
 $all_day = optional_param('all_day', false, PARAM_BOOL);
 $ampm = optional_param('ampm', null, PARAM_TEXT);
 // Deal with the 'array' params differently, depending on installed Moodle version
