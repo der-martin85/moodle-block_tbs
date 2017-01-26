@@ -26,12 +26,13 @@ require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php');
  * $endtime   - The end of the period
  * $ignore    - An entry ID to ignore, 0 to ignore no entries
  * $repignore - A repeat ID to ignore everything in the series, 0 to ignore no series
+ * $types     - Check among given types or null
  *
  * Returns:
  *   nothing   - The area is free
  *   something - An error occured, the return value is human readable
  */
-function tbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore) {
+function tbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore, $types = null) {
     global $DB;
     global $enable_periods;
     global $periods;
@@ -50,6 +51,14 @@ function tbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore) {
         $params[] = $repignore;
     }
 
+    if ($types != null) {
+        $sql .= " AND (";
+	foreach($types as $t) {
+		empty($tsql) ? $tsql = " type = '$t'" : $tsql .= " OR type = '$t'";
+	}
+	$sql .= $tsql . " )";
+    }
+    
     $entries = $DB->get_records_select('block_tbs_entry', $sql, $params, 'start_time');
 
     if (empty($entries)) {

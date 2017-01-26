@@ -15,6 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+// DEBUGGING
+//ini_set('display_errors',1);
+//ini_set('display_startup_errors',1);
+//function kill( $data ) { die( var_dump ( $data ) ); }
+
 require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php'); //for Moodle integration
 // probably a bad place to put this, but for error reporting purposes
 // $pview must be defined. if it's not then there's errors generated all

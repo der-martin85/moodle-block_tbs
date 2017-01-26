@@ -272,6 +272,7 @@ $errtype = 0;
 $forcemoveoutput = '';
 // Calculate all_day start-/endtime for clash detection
 function get_allday_starttime($enable_periods = false, $month = null, $day = null, $year = null){
+    global $morningstarts;
     if ($enable_periods) {
 	return mktime(12, 0, 0, $month, $day, $year);
     } else {
@@ -280,8 +281,9 @@ function get_allday_starttime($enable_periods = false, $month = null, $day = nul
 }
 
 function get_allday_endtime($enable_periods = false, $month = null, $day = null, $year = null){
+    global $max_periods, $eveningends, $morningstarts_minutes, $eveningends_minutes;
     if ($enable_periods) {
-	return mktime(12, $max_periods, 0, $month, $day, $year);
+    	return mktime(12, $max_periods, 0, $month, $day, $year);
     } else {
 	$end_minutes = $eveningends_minutes + $morningstarts_minutes;
 	($eveningends_minutes > 59) ? $end_minutes += 60 : '';
@@ -292,8 +294,10 @@ function get_allday_endtime($enable_periods = false, $month = null, $day = null,
 $ad_starttime = get_allday_starttime($enable_periods, $month, $day, $year);
 $ad_endtime = get_allday_endtime($enable_periods, $month, $day, $year);
 
+
 // Calculate all_week start-/endtime for clash detection (capacity checking)
 function get_allweek_starttime($enable_periods = false, $month = null, $day = null, $year = null){
+    global $weekstarts, $morningstarts;
     if ($enable_periods) {
 	$time =  mktime(12, 0, 0, $month, $day, $year);
 	if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0) {
@@ -310,6 +314,7 @@ function get_allweek_starttime($enable_periods = false, $month = null, $day = nu
 }
 
 function get_allweek_endtime($enable_periods = false, $month = null, $day = null, $year = null){
+    global $max_periods, $eveningends, $eveningends_minutes, $morningstarts_minutes;
     if ($enable_periods) {
 	return mktime(12, $max_periods, 0, $month, $day + 6, $year);
     } else {
@@ -325,29 +330,38 @@ foreach ($rooms as $room_id) {
     if ($rep_type != 0 && !empty($reps)) {
         if (count($reps) < $max_rep_entrys) {
             for ($i = 0; $i < count($reps); $i++) {
-		// first check for day clashes
+		// first check for direct clashes
                 // calculate diff each time and correct where events
                 // cross DST
-                $diff = $ad_endtime - $ad_starttime;
+                $diff = $endtime - $starttime;
                 $diff += cross_dst($reps[$i], $reps[$i] + $diff);
                 $tmp = tbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
                 if (!empty($tmp)) {
                     $err = $err.$tmp;
                     $errtype = TBS_ERR_DOUBLEBOOK;
-                } else {
-		    // no day clashes - check for week clashes (only for type E or I)
-            	    // calculate diff each time and correct where events
-            	    // cross DST
-            	    $diff = $aw_endtime - $aw_starttime;
-		    $aw_reps_i = get_allweek_starttime($enable_periods, date("m",$reps[$i]), date("d",$reps[$i]), date("y",$reps[$i]));
-            	    $diff += cross_dst($aw_reps_i, $aw_reps_i + $diff);
-		    if( empty($type) or $type == 'E' or $type == 'I' ){
-            		$tmp = tbsCheckCapacity($room_id, $aw_reps_i, $aw_reps_i + $diff, $ignore_id, $repeat_id);
+                } elseif( !empty($type) and ( $type == 'E' or $type == 'I' ) ){
+			// no direct clashes - check day clashes for type E and I
+			// calculate diff each time and correct where events
+			// cross DST
+			$diff = $ad_endtime - $ad_starttime;
+			$diff += cross_dst($reps[$i], $reps[$i] + $diff);
+			$tmp = tbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id, array("E","I"));
 			if (!empty($tmp)) {
-			    $err = $err.$tmp;
-			    $errtype = TBS_TOO_MANY;
+				$err = $err.$tmp;
+				$errtype = TBS_ERR_DOUBLEBOOK;
+			} else {
+				// no day clashes - check for week clashes (only for type E or I)
+				// calculate diff each time and correct where events
+				// cross DST
+				$diff = $aw_endtime - $aw_starttime;
+				$aw_reps_i = get_allweek_starttime($enable_periods, date("m",$reps[$i]), date("d",$reps[$i]), date("y",$reps[$i]));
+				$diff += cross_dst($aw_reps_i, $aw_reps_i + $diff);
+				$tmp = tbsCheckCapacity($room_id, $aw_reps_i, $aw_reps_i + $diff, $ignore_id, $repeat_id);
+				if (!empty($tmp)) {
+					$err = $err.$tmp;
+					$errtype = TBS_TOO_MANY;
+				}
 			}
-		    }
 		}
             }
         } else {
@@ -396,12 +410,13 @@ foreach ($rooms as $room_id) {
             // If the user hasn't confirmed they want to double book, check the room is free and capacity (only type E or I).
 	    if( !empty($type) and ( $type == 'E' or $type == 'I' ) ){
 		$capacity_err .= tbsCheckCapacity($room_id, $aw_starttime, $aw_endtime - 1, $ignore_id, 0);
+		if( !empty($capacity_err) ){
+			$err .= $capacity_err;
+		} else {
+			$err .= tbsCheckFree($room_id, $ad_starttime, $ad_endtime - 1, $ignore_id, 0, array("E","I"));
+		}
 	    }
-	    if( !empty($capacity_err) ){
-		$err .= $capacity_err;
-	    } else {
-        	$err .= tbsCheckFree($room_id, $ad_starttime, $ad_endtime - 1, $ignore_id, 0);
-	    }
+	    $err .= tbsCheckFree($room_id, $starttime, $endtime - 1, $ignore_id, 0);
         }
     }
 
