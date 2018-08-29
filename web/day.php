@@ -384,13 +384,15 @@ if (!empty($area)) {
                             // Not allowed to book this room
                             echo '<center>';
                             $title = get_string('notallowedbook', 'block_tbs');
-                            echo '<img src="'.$OUTPUT->pix_url('toofaradvance', 'block_tbs').'" width="10" height="10" border="0" alt="'.$title.'" title="'.$title.'" />';
+                            echo $OUTPUT->pix_icon('toofaradvance', $title, 'block_tbs', 
+                                array('width' => '10', 'height' => '10',  'border' => '0', 'title' => $title));
                             echo '</center>';
                         } else if (!$advanceok) {
                             // Too far in advance to edit
                             echo '<center>';
                             $title = get_string('toofaradvance', 'block_tbs', $max_advance_days);
-                            echo '<img src="'.$OUTPUT->pix_url('toofaradvance', 'block_tbs').'" width="10" height="10" border="0" alt="'.$title.'" title="'.$title.'" />';
+                            echo $OUTPUT->pix_icon('toofaradvance', $title, 'block_tbs', 
+                                array('width' => '10', 'height' => '10',  'border' => '0', 'title' => $title));
                             echo '</center>';
                         } else {
                             if ($javascript_cursor) {
@@ -409,7 +411,7 @@ if (!empty($area)) {
                             } else {
                                 echo "<a href=\"".($editurl->out(true, array('hour' => $hour, 'minute' => $minute)))."\">";
                             }
-                            echo '<img src="'.$OUTPUT->pix_url('new', 'block_tbs').'" width="10" height="10" border="0"></a>';
+                            echo $OUTPUT->pix_icon('new', $title, 'block_tbs', array('width' => '10', 'height' => '10',  'border' => '0'));
                             echo "</center>";
                             if ($javascript_cursor) {
                                 echo "<SCRIPT language=\"JavaScript\">\n<!--\n";
