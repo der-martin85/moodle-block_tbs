@@ -40,10 +40,9 @@ if (has_capability('block/tbs:edittbs', $context) or has_capability('block/tbs:a
         <div id="request_vacate">
         <input type="hidden" name="id" value="'.$booking->userid.'" />
         <input type="hidden" name="sesskey" value="'.sesskey().'" />';
-    print_textarea(true, 15, 350, 0, 0, 'message', get_string('requestvacatemessage_html', 'block_tbs', $messagelang));
+        $OUTPUT->print_textarea('message', 'edit-message', get_string('requestvacatemessage_html', 'block_tbs', $messagelang), 15, 350);
     echo '<input type="hidden" name="format" value="'.FORMAT_HTML.'" />';
 
-    //<textarea name = "message" cols=50 rows=10>'.get_string('requestvacatemessage','block_tbs',$messagelang).'</textarea>
     echo '<input type="hidden" name="format" value="'.FORMAT_MOODLE.'" />
         <br /><input type="submit" value="'.get_string('sendmessage', 'message').'" />
         </div>
