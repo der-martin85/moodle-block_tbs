@@ -48,7 +48,7 @@ class block_tbs extends block_base {
                 $serverpath = $CFG->wwwroot.'/blocks/tbs/web';
             }
             $go = get_string('accesstbs', 'block_tbs');
-            $icon = $OUTPUT->pix_icon('web', 'TBS icon', 'block_tbs', array('height' => "16", 'width' => "16"));
+            $icon = $OUTPUT->pix_icon('web', 'TBS icon', 'block_tbs');
             $target = '';
             if ($cfg_tbs->newwindow) {
                 $target = ' target="_blank" ';

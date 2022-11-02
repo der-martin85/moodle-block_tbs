@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-$plugin->version = 2021090300;
-$plugin->requires = 2014051200; // Moodle 2.7+
+$plugin->version = 2022031900;
+$plugin->requires = 2019111800; // Moodle 3.8+
 $plugin->cron = 300;
 $plugin->component = 'block_tbs';
-$plugin->maturity = MATURITY_BETA;
-$plugin->release = '2.x (Build: 2021090300)';
+$plugin->maturity = MATURITY_STABLE;
+$plugin->release = '2.x (Build: 2022031900)';

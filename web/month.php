@@ -415,14 +415,12 @@ for ($cday = 1; $cday <= $days_in_month; $cday++) {
         if (!$allowedtobook) {
             // No permission to book this room
             $title = get_string('notallowedbook', 'block_tbs');
-            echo $OUTPUT->pix_icon('toofaradvance', $title, 'block_tbs', 
-                array('width' => '10', 'height' => '10',  'border' => '0', 'title' => $title));
+            echo $OUTPUT->pix_icon('toofaradvance', $title, 'block_tbs');
 
         } else if (!check_max_advance_days($cday, $month, $year)) {
             // Too far in advance to edit
             $title = get_string('toofaradvance', 'block_tbs', $max_advance_days);
-            echo $OUTPUT->pix_icon('toofaradvance', $title, 'block_tbs', 
-                array('width' => '10', 'height' => '10',  'border' => '0', 'title' => $title));
+            echo $OUTPUT->pix_icon('toofaradvance', $title, 'block_tbs');
         } else {
             if ($javascript_cursor) {
                 echo "<SCRIPT language=\"JavaScript\">\n<!--\n";
@@ -436,9 +434,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++) {
             } else {
                 echo '<a href="'.($editurl->out(true, array('hour' => $morningstarts, 'minute' => 0))).'">';
             }
-            $title = get_string('newbooking', 'block_tbs');
-            echo $OUTPUT->pix_icon('new', $title, 'block_tbs', array('width' => '10', 'height' => '10',  'border' => '0'));
-            echo '</a>';
+            echo $OUTPUT->pix_icon('new', get_string('addnewbooking', 'block_tbs'), 'block_tbs').'</a>';
             if ($javascript_cursor) {
                 echo "<SCRIPT language=\"JavaScript\">\n<!--\n";
                 echo "EndActiveCell();\n";

@@ -361,3 +361,4 @@ $string['weeks'] = 'Wochen';
 $string['you_are'] = 'Sie sind';
 $string['you_have_not_entered'] = 'Sie haben das Feld nicht ausgefüllt: ';
 $string['you_have_not_selected'] = 'Sie haben nicht gewählt: ';
+$string['addnewbooking']      = 'Klassenarbeit hinzufügen';

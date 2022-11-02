@@ -22,6 +22,7 @@ function xmldb_block_tbs_install() {
     // Get system context.
     $context = context_system::instance();
 
+    update_capabilities('block_tbs');
     // Create the viewer role.
     if (!$DB->record_exists('role', array('shortname' => 'tbsviewer'))) {
         $tbsviewerid = create_role(get_string('tbsviewer', 'block_tbs'), 'tbsviewer',

@@ -66,7 +66,7 @@ if (!empty($hour)) {
     $thisurl->param('hour', $hour);
 }
 if (!empty($minute)) {
-    $thisurl->param('minute', $minute);;
+    $thisurl->param('minute', $minute);
 }
 
 $PAGE->set_url($thisurl);
@@ -411,7 +411,7 @@ print_header_tbs($day, $month, $year, $area);
                         $units = array("minutes", "hours", "days", "weeks");
                     }
 
-                    while (list(, $unit) = each($units)) {
+                    foreach ($units as $unit) {
                         echo "<OPTION VALUE=$unit";
                         if ($dur_units == get_string($unit, 'block_tbs')) {
                             echo " SELECTED";
